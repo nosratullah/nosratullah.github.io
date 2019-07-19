@@ -9,4 +9,10 @@
       <image:loc>http://nosratullah.github.io/images/instagram-brands.svg</image:loc>
     </image:image>
   </url>
+  <url>
+    <loc>http://nosratullah.github.io/assets/profile.jpg</loc>
+    <lastmod>2019-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
 </urlset>

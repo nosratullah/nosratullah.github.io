@@ -17,7 +17,7 @@ if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required
   <title>Home</title>
   <!-- CSS -->
   <link rel="stylesheet" type="text/css" href="css/site_global.css?crc=444006867"/>
-  <link rel="stylesheet" type="text/css" href="css/index.css?crc=263364727" id="pagesheet"/>
+  <link rel="stylesheet" type="text/css" href="css/index.css?crc=50213543" id="pagesheet"/>
     <!--HTML Widget code-->
   
 		<style>
@@ -124,16 +124,15 @@ letter-spacing: 3px;
  <body>
 
   <div class="clearfix borderbox" id="page"><!-- group -->
-   <div class="browser_width" id="u490-bw">
-    <div class="size_browser_width" id="u490"><!-- custom html -->
-     
+   <div class="clearfix grpelem" id="ppu490"><!-- column -->
+    <div class="clearfix colelem" id="pu490"><!-- group -->
+     <div class="size_fluid_width grpelem" id="u490" data-sizePolicy="fluidWidth" data-pintopage="page_fluidx"><!-- custom html -->
+      
 <canvas id="background-canvas"></canvas>
 
-    </div>
-   </div>
-   <div class="clearfix grpelem" id="pu164"><!-- column -->
-    <div class="size_fixed colelem" id="u164" data-sizePolicy="fixed" data-pintopage="page_fixedCenter"><!-- custom html -->
-     
+     </div>
+     <div class="size_fixed grpelem" id="u164" data-sizePolicy="fixed" data-pintopage="page_fixedCenter"><!-- custom html -->
+      
 <!-- This Adobe Muse widget was created by the team at MuseFree.com -->
 <nav class="menu">
   <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open"/>
@@ -170,6 +169,7 @@ letter-spacing: 3px;
     </defs>
 </svg>
 
+     </div>
     </div>
     <div class="size_fixed colelem" id="u132" data-sizePolicy="fixed" data-pintopage="page_fixedCenter"><!-- custom html -->
      
@@ -420,7 +420,7 @@ letter-spacing: 3px;
      </div>
     </div>
    </div>
-   <div class="verticalspacer" data-offset-top="1902" data-content-above-spacer="1902" data-content-below-spacer="61" data-sizePolicy="fixed" data-pintopage="page_fixedLeft"></div>
+   <div class="verticalspacer" data-offset-top="1918" data-content-above-spacer="1918" data-content-below-spacer="61" data-sizePolicy="fixed" data-pintopage="page_fixedLeft"></div>
    <div class="clearfix grpelem" id="pu710"><!-- group -->
     <div class="browser_width grpelem" id="u710-bw">
      <div id="u710"><!-- simple frame --></div>
@@ -471,7 +471,7 @@ Muse.Utils.transformMarkupToFixBrowserProblems();/* body */
   
 <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
 <script>
-!function(){function s(){e=window.innerWidth,i=window.innerHeight,r={},n=document.getElementById("background-canvas"),n.width=e,n.height=i,o=n.getContext("2d"),y()}function u(){"ontouchstart"in window||window.addEventListener("mousemove",h),window.addEventListener("resize",p)}function d(){v()}function v(){a&&w(),requestAnimationFrame(v)}function h(e){var i=posy=0;e.pageX||e.pageY?(i=e.pageX,posy=e.pageY):(e.clientX||e.clientY)&&(i=e.clientX+document.body.scrollLeft+document.documentElement.scrollLeft,posy=e.clientY+document.body.scrollTop+document.documentElement.scrollTop),r.x=i,r.y=posy}function p(){e=window.innerWidth,i=window.innerHeight,n.width=e,n.height=i;for(var o in t)TweenLite.killTweensOf(t[o]);y()}function y(){t=[];for(var n=0;e/c>=n;n++)for(var o=0;i/c>o;o++){var r=n*c,a=o*c,f={x:r,originX:r,y:a,originY:a};t.push(f)}for(var s=0;s<t.length;s++){for(var u=[],d=t[s],v=0;v<t.length;v++){var h=t[v];if(d!=h){for(var p=!1,y=0;5>y;y++)p||void 0==u[y]&&(u[y]=h,p=!0);for(var y=0;5>y;y++)p||x(d,h)<x(d,u[y])&&(u[y]=h,p=!0)}}d.closest=u}for(var s in t){var w=new b(t[s],l,"rgba(255,255,255,0.3)");t[s].circle=w}for(var s in t)g(t[s])}function w(){o.clearRect(0,0,e,i);for(var n in t)r&&(Math.abs(x(r,t[n]))<4e3?(t[n].opacity=.3,t[n].circle.opacity=1):Math.abs(x(r,t[n]))<2e4?(t[n].opacity=.1,t[n].circle.opacity=1):Math.abs(x(r,t[n]))<4e4?(t[n].opacity=.02,t[n].circle.opacity=.8):(t[n].opacity=0,t[n].circle.opacity=.7)),t[n].circle.color="rgba(127,127,127,1)",m(t[n]),t[n].circle.draw()}function g(e){TweenLite.to(e,1+1*Math.random(),{x:e.originX+Math.random()*(c/2),y:e.originY+Math.random()*(c/2),ease:Circ.easeInOut,onComplete:function(){g(e)}})}function m(e){if(r)for(var i in e.closest)o.beginPath(),o.moveTo(e.x,e.y),o.lineTo(e.closest[i].x,e.closest[i].y),o.strokeStyle="rgba(127,127,127,"+e.opacity+")",o.stroke()}function b(e,i,n){var t=this;!function(){t.pos=e||null,t.radius=i||null,t.color=n||null}(),this.draw=function(){o.beginPath(),o.arc(t.pos.x,t.pos.y,t.radius,0,2*Math.PI,!1),o.fillStyle="rgba(127,127,127,"+t.opacity+")",o.fill()}}function x(e,i){return Math.pow(e.x-i.x,2)+Math.pow(e.y-i.y,2)}var e,i,n,o,t,r,a=!0,c=60,l=2;s(),d(),u()}();
+!function(){function s(){e=window.innerWidth,i=window.innerHeight,r={},n=document.getElementById("background-canvas"),n.width=e,n.height=i,o=n.getContext("2d"),y()}function u(){"ontouchstart"in window||window.addEventListener("mousemove",h),window.addEventListener("resize",p)}function d(){v()}function v(){a&&w(),requestAnimationFrame(v)}function h(e){var i=posy=0;e.pageX||e.pageY?(i=e.pageX,posy=e.pageY):(e.clientX||e.clientY)&&(i=e.clientX+document.body.scrollLeft+document.documentElement.scrollLeft,posy=e.clientY+document.body.scrollTop+document.documentElement.scrollTop),r.x=i,r.y=posy}function p(){e=window.innerWidth,i=window.innerHeight,n.width=e,n.height=i;for(var o in t)TweenLite.killTweensOf(t[o]);y()}function y(){t=[];for(var n=0;e/c>=n;n++)for(var o=0;i/c>o;o++){var r=n*c,a=o*c,f={x:r,originX:r,y:a,originY:a};t.push(f)}for(var s=0;s<t.length;s++){for(var u=[],d=t[s],v=0;v<t.length;v++){var h=t[v];if(d!=h){for(var p=!1,y=0;5>y;y++)p||void 0==u[y]&&(u[y]=h,p=!0);for(var y=0;5>y;y++)p||x(d,h)<x(d,u[y])&&(u[y]=h,p=!0)}}d.closest=u}for(var s in t){var w=new b(t[s],l,"rgba(255,255,255,0.3)");t[s].circle=w}for(var s in t)g(t[s])}function w(){o.clearRect(0,0,e,i);for(var n in t)r&&(Math.abs(x(r,t[n]))<4e3?(t[n].opacity=.3,t[n].circle.opacity=1):Math.abs(x(r,t[n]))<2e4?(t[n].opacity=.1,t[n].circle.opacity=1):Math.abs(x(r,t[n]))<4e4?(t[n].opacity=.02,t[n].circle.opacity=.8):(t[n].opacity=0,t[n].circle.opacity=.7)),t[n].circle.color="rgba(127,127,127,1)",m(t[n]),t[n].circle.draw()}function g(e){TweenLite.to(e,1+1*Math.random(),{x:e.originX+Math.random()*(c/2),y:e.originY+Math.random()*(c/2),ease:Circ.easeInOut,onComplete:function(){g(e)}})}function m(e){if(r)for(var i in e.closest)o.beginPath(),o.moveTo(e.x,e.y),o.lineTo(e.closest[i].x,e.closest[i].y),o.strokeStyle="rgba(127,127,127,"+e.opacity+")",o.stroke()}function b(e,i,n){var t=this;!function(){t.pos=e||null,t.radius=i||null,t.color=n||null}(),this.draw=function(){o.beginPath(),o.arc(t.pos.x,t.pos.y,t.radius,0,2*Math.PI,!1),o.fillStyle="rgba(127,127,127,"+t.opacity+")",o.fill()}}function x(e,i){return Math.pow(e.x-i.x,2)+Math.pow(e.y-i.y,2)}var e,i,n,o,t,r,a=!0,c=50,l=2;s(),d(),u()}();
 </script>
 	
 		

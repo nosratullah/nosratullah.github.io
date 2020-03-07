@@ -1,10 +1,10 @@
-<manifest alg="2" build="2018.0.0.379" opt="false" iceEnabled="true" iceMarkupVersion="2" iceEnabledOptions="link,responsive,cachebuster,textStyling" exportTarget="other" domain="nosratullah.github.io" resolutions="1x" timestamp="1565767626071">
+<manifest alg="2" build="2018.0.0.379" opt="false" iceEnabled="true" iceMarkupVersion="2" iceEnabledOptions="link,responsive,cachebuster,textStyling" exportTarget="other" domain="nosratullah.github.io" resolutions="1x" timestamp="1583571065569">
   <folder name="assets">
     <file name="profile.jpg" crc="124432261" seo="true" mt="1563533023000"/>
   </folder>
   <folder name="css">
     <file name="site_global.css" crc="444006867"/>
-    <file name="index.css" crc="4152651678" ref="index"/>
+    <file name="index.css" crc="402481359" ref="index"/>
   </folder>
   <folder name="scripts">
     <file name="jquery-1.8.3.min.js" crc="209076791" ref="index"/>
@@ -13,7 +13,11 @@
     <file name="museconfig.js" crc="380897831" ref="index"/>
     <file name="jquery.watch.js" crc="99325471" ref="index"/>
     <file name="require.js" crc="4157109226" ref="index"/>
+    <file name="webpro.js" crc="242022427" ref="index"/>
+    <file name="musewpdisclosure.js" crc="119288625" ref="index"/>
   </folder>
-  <folder name="images"/>
-  <file name="index.html" crc="293628447" seo="true" mt="1565767419181" redirect="true"/>
+  <folder name="images">
+    <file name="blank.gif" crc="4208392903" ref="index"/>
+  </folder>
+  <file name="index.html" crc="4204906260" seo="true" mt="1583571030400" redirect="true"/>
 </manifest>

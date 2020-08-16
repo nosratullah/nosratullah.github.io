@@ -1,23 +1,25 @@
-<manifest alg="2" build="2018.0.0.379" opt="false" iceEnabled="true" iceMarkupVersion="2" iceEnabledOptions="link,responsive,cachebuster,textStyling" exportTarget="other" domain="nosratullah.github.io" resolutions="1x" timestamp="1597295204387">
+<manifest alg="2" build="2018.0.0.379" opt="false" iceEnabled="true" iceMarkupVersion="2" iceEnabledOptions="link,responsive,cachebuster,textStyling" exportTarget="other" domain="nosratullah.github.io" resolutions="1x" timestamp="1597606375002">
   <folder name="assets">
     <file name="web_pic.jpg" crc="3846574773" seo="true" mt="1597295093000"/>
   </folder>
   <folder name="css">
     <file name="site_global.css" crc="444006867"/>
-    <file name="index.css" crc="210475767" ref="index"/>
+    <file name="index.css" crc="494406089" ref="index"/>
+    <file name="cv.css" crc="269324077" ref="cv"/>
   </folder>
   <folder name="scripts">
-    <file name="jquery-1.8.3.min.js" crc="209076791" ref="index"/>
-    <file name="museutils.js" crc="3803043152" ref="index"/>
-    <file name="whatinput.js" crc="86476730" ref="index"/>
-    <file name="museconfig.js" crc="380897831" ref="index"/>
-    <file name="jquery.watch.js" crc="99325471" ref="index"/>
-    <file name="require.js" crc="4157109226" ref="index"/>
-    <file name="webpro.js" crc="242022427" ref="index"/>
-    <file name="musewpdisclosure.js" crc="119288625" ref="index"/>
+    <file name="jquery-1.8.3.min.js" crc="209076791" ref="index:cv"/>
+    <file name="museutils.js" crc="3803043152" ref="index:cv"/>
+    <file name="whatinput.js" crc="86476730" ref="index:cv"/>
+    <file name="museconfig.js" crc="380897831" ref="index:cv"/>
+    <file name="jquery.watch.js" crc="99325471" ref="index:cv"/>
+    <file name="require.js" crc="4157109226" ref="index:cv"/>
+    <file name="webpro.js" crc="242022427" ref="index:cv"/>
+    <file name="musewpdisclosure.js" crc="119288625" ref="index:cv"/>
   </folder>
   <folder name="images">
     <file name="blank.gif" crc="4208392903" ref="index"/>
   </folder>
-  <file name="index.html" crc="453570506" seo="true" mt="1597295106458" redirect="true"/>
+  <file name="index.html" crc="4093579623" seo="true" mt="1597606278742" redirect="true"/>
+  <file name="cv.html" crc="3761818624" seo="true" mt="1597606363405" redirect="true"/>
 </manifest>

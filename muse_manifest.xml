@@ -1,11 +1,11 @@
-<manifest alg="2" build="2018.0.0.379" opt="false" iceEnabled="true" iceMarkupVersion="2" iceEnabledOptions="link,responsive,cachebuster,textStyling" exportTarget="other" domain="nosratullah.github.io" resolutions="1x" timestamp="1597606375002">
+<manifest alg="2" build="2018.0.0.379" opt="false" iceEnabled="true" iceMarkupVersion="2" iceEnabledOptions="link,responsive,cachebuster,textStyling" exportTarget="other" domain="nosratullah.github.io" resolutions="1x" timestamp="1597609498702">
   <folder name="assets">
     <file name="web_pic.jpg" crc="3846574773" seo="true" mt="1597295093000"/>
   </folder>
   <folder name="css">
     <file name="site_global.css" crc="444006867"/>
-    <file name="index.css" crc="494406089" ref="index"/>
-    <file name="cv.css" crc="269324077" ref="cv"/>
+    <file name="index.css" crc="4104279483" ref="index"/>
+    <file name="cv.css" crc="224044050" ref="cv"/>
   </folder>
   <folder name="scripts">
     <file name="jquery-1.8.3.min.js" crc="209076791" ref="index:cv"/>
@@ -20,6 +20,6 @@
   <folder name="images">
     <file name="blank.gif" crc="4208392903" ref="index"/>
   </folder>
-  <file name="index.html" crc="4093579623" seo="true" mt="1597606278742" redirect="true"/>
-  <file name="cv.html" crc="3761818624" seo="true" mt="1597606363405" redirect="true"/>
+  <file name="index.html" crc="64543826" seo="true" mt="1597608500389" redirect="true"/>
+  <file name="cv.html" crc="3926466862" seo="true" mt="1597609485914" redirect="true"/>
 </manifest>

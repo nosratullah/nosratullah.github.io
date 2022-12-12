@@ -11,8 +11,8 @@
 	--color-primary: rgb(23, 23, 23) !important;
 	/* --color-link: #df5d64; */
 	--color-link:  #9acd32;
-	--color-text: rgb(23, 23, 23) !important;
-	--color-bg: #fff !important;
+	--color-text: #f7f7f7 !important;
+	--color-bg: rgb(23, 23, 23) !important;
 	/* --color-hover: rgba(23, 23, 23, 0.15); */
 	--color-hover: #9acd32;
 	--nexmoe-gap: 1rem;

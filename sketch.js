@@ -5,8 +5,8 @@ var canvas;
 let startTime = 0;
 let duration = 10000; // 10 seconds
 let initialFrameRate = 60;
-let finalFrameRate = 10;
-let steepness = 0.1;
+let finalFrameRate = 1;
+let steepness = 0.01;
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);

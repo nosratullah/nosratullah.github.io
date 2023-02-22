@@ -74,10 +74,10 @@ function draw() {
     p.add(createVector(cos(angle), sin(angle)));
     ellipse(p.x, p.y, random(5), random(5));
     }
-  time_counter += 1;
-  if (time_counter > 1000) {
-    noLoop();
-  }
+//   time_counter += 1;
+//   if (time_counter > 1000) {
+//     noLoop();
+//   }
 }
 
 

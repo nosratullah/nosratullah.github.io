@@ -2,6 +2,11 @@ var points = [];
 var speed = 0.002;
 var time_counter = 0;
 var canvas;
+let startTime = 0;
+let duration = 10000; // 10 seconds
+let initialFrameRate = 60;
+let finalFrameRate = 10;
+let steepness = 0.1;
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
@@ -14,10 +19,13 @@ function setup() {
   background(0);
   angleMode(DEGREES);
   noiseDetail(1);
+//   initializing refresh rate:
+  frameRate(initialFrameRate);
+  startTime = millis();
+  
   
   var density = 100;
   var space = width / density;
-
   for (let x = 0; x < width; x+=space) {
     // const element = array[x];
     for (let y = 0; y < height; y+=space) {
@@ -36,6 +44,17 @@ function setup() {
 }
 
 function draw() {
+//   refresh rate change:
+  let elapsedTime = millis() - startTime;
+  let t = min(elapsedTime / duration, 1); // Normalize time between 0 and 1
+  let x = 4 * (2 * t - 1) * steepness;
+  let sigmoid = 1 / (1 + exp(-x));
+  let currentFrameRate = lerp(initialFrameRate, finalFrameRate, sigmoid);
+
+  // Update frame rate
+  frameRate(currentFrameRate);
+  
+  
   background(0, 8);
   noStroke();
   if ( frameCount <= points.length ) {

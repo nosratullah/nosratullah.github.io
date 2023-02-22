@@ -54,11 +54,23 @@ body {
 	}
 }
 
-header {
+/* header {
 	margin-top: 2rem;
 	text-align: center;
 	line-height: 2;
+} */
+
+header {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  text-align: center;
+
 }
+
 
 header h2 {
 	border-bottom: none;

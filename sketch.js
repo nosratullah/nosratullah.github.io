@@ -53,7 +53,8 @@ function draw() {
 
   // Update frame rate
   frameRate(currentFrameRate);
-  
+  // Debug information
+  text(`Current frame rate: ${currentFrameRate}`, 10, 20);
   
   background(0, 8);
   noStroke();

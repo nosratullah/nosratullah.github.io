@@ -45,7 +45,7 @@ body {
 	line-height: 1.5;
 	padding: 0 3rem;
 	/* font-family: sans-serif; */
-	font-family: 'Lucida Sans Typewriter', monospace; 
+	font-family: 'Courier', monospace; 
 }
 
 
@@ -560,7 +560,7 @@ img {
 /* CV template */
 body{
 	/* font-family: Helvetica;  */
-	font-family: 'monospace', monospace; 
+	font-family: 'Courier', monospace; 
 }
 
 div.container {

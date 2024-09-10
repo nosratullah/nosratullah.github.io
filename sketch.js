@@ -39,7 +39,7 @@ function draw() {
   background(0, 8);
   noStroke();
   // Exponential decay of frameCount
-  var lambda = 0.001; // Decay constant, adjust this value to change the rate of decay
+  var lambda = 0.005; // Decay constant, adjust this value to change the rate of decay
   var decayedFrameCount = frameCount * Math.exp(-lambda * time_counter);
   // var decayedFrameCount = frameCount
   if ( decayedFrameCount <= points.length ) {

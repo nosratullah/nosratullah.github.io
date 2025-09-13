@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Gallery</title>
 </head>
 <body>
@@ -12,7 +13,14 @@
         <a>
           <h1 href="index.html"> Nosrat</h1>
         </a>
-        <div id="menu"></div>
+        
+        <div class="nav-controls">
+           <div id="menu"></div>
+           <!-- Theme toggle button -->
+           <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+              <i class="fa-regular fa-moon" id="theme-icon"></i>
+           </button>
+        </div>
 
     <script>
         fetch('menu.html')
@@ -82,6 +90,32 @@
             if (event.key === 'Escape' && modal.style.display === 'block') {
                 modal.style.display = 'none';
             }
+        });
+    </script>
+    
+    <!-- Theme toggle script -->
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+           const currentTheme = document.documentElement.getAttribute('data-theme');
+           const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+           
+           document.documentElement.setAttribute('data-theme', newTheme);
+           localStorage.setItem('theme', newTheme);
+           
+           // Update icon
+           const icon = document.getElementById('theme-icon');
+           icon.className = newTheme === 'dark' ? 'fa-regular fa-sun' : 'fa-regular fa-moon';
+        }
+        
+        // Load saved theme on page load
+        document.addEventListener('DOMContentLoaded', function() {
+           const savedTheme = localStorage.getItem('theme') || 'light';
+           document.documentElement.setAttribute('data-theme', savedTheme);
+           
+           // Update icon
+           const icon = document.getElementById('theme-icon');
+           icon.className = savedTheme === 'dark' ? 'fa-regular fa-sun' : 'fa-regular fa-moon';
         });
     </script>
     

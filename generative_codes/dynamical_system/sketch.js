@@ -40,7 +40,12 @@ function setup() {
 }
 
 function draw() {
-  background(30); // Dark background
+  let theme = document.body.getAttribute('data-theme') || 'light';
+  let bgColor = theme === 'dark' ? (17, 17, 17) : (255, 255, 255); // Black for dark mode, white for light mode
+  let bgAlpha = theme === 'dark' ? 20 : 30; // Slight trail effect
+  
+  background(bgColor, bgAlpha);
+  // background(30); // Dark background
 
   // Get matrix A parameters from sliders
   let a11 = a11Slider.value();

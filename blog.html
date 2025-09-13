@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"            if (newTheme === 'dark') {
+                themeIcon.className = 'fa-regular fa-sun';
+            } else {
+                themeIcon.className = 'fa-regular fa-moon';
+            } <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- Markdown parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <title>Blog - Nosrat</title>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="hero">
+        <a>
+            <h1 href="index.html"> Nosrat</h1>
+        </a>
+        <div class="nav-controls">
+            <div id="menu"></div>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                <i class="fa-regular fa-moon" id="theme-icon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="blog-container">
+        <header class="blog-header">
+            <h1>Blog</h1>
+            <p>Thoughts on neuroscience, research, and life</p>
+        </header>
+
+        <div id="blog-posts" class="blog-posts">
+            <!-- Posts will be loaded here -->
+        </div>
+    </main>
+
+    <script>
+        // Load menu
+        fetch('menu.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('menu').innerHTML = data;
+            });
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+
+        // Check for saved theme preference or default to light mode
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.className = 'fa fa-sun-o';
+            } else {
+                themeIcon.className = 'fa-regular fa-moon';
+            }
+        }
+
+        // Blog functionality
+        async function loadBlogPosts() {
+            try {
+                // List of markdown files - you'll need to update this manually when adding new posts
+                const posts = [
+                    'hello-world.md',
+                    'neural-manifolds.md',
+                    'research-update.md'
+                ];
+
+                const blogContainer = document.getElementById('blog-posts');
+                
+                for (const postFile of posts) {
+                    try {
+                        const response = await fetch(`blog/${postFile}`);
+                        if (response.ok) {
+                            const markdown = await response.text();
+                            const post = parseMarkdownPost(markdown, postFile);
+                            const postElement = createPostElement(post);
+                            blogContainer.appendChild(postElement);
+                        }
+                    } catch (error) {
+                        console.log(`Could not load ${postFile}`);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading blog posts:', error);
+            }
+        }
+
+        function parseMarkdownPost(markdown, filename) {
+            const lines = markdown.split('\n');
+            const post = {
+                title: 'Untitled',
+                date: '',
+                excerpt: '',
+                content: markdown,
+                filename: filename
+            };
+
+            // Parse frontmatter if it exists
+            if (lines[0] === '---') {
+                let frontmatterEnd = -1;
+                for (let i = 1; i < lines.length; i++) {
+                    if (lines[i] === '---') {
+                        frontmatterEnd = i;
+                        break;
+                    }
+                }
+                
+                if (frontmatterEnd > 0) {
+                    // Parse frontmatter
+                    for (let i = 1; i < frontmatterEnd; i++) {
+                        const line = lines[i];
+                        if (line.includes(':')) {
+                            const [key, ...valueParts] = line.split(':');
+                            const value = valueParts.join(':').trim();
+                            post[key.trim()] = value;
+                        }
+                    }
+                    // Remove frontmatter from content
+                    post.content = lines.slice(frontmatterEnd + 1).join('\n');
+                }
+            }
+
+            // Generate excerpt if not provided
+            if (!post.excerpt) {
+                const contentText = post.content.replace(/[#*`]/g, '').substring(0, 200);
+                post.excerpt = contentText + (contentText.length >= 200 ? '...' : '');
+            }
+
+            return post;
+        }
+
+        function createPostElement(post) {
+            const article = document.createElement('article');
+            article.className = 'blog-post';
+            
+            const postDate = post.date ? new Date(post.date).toLocaleDateString() : '';
+            
+            article.innerHTML = `
+                <header class="post-header">
+                    <h2><a href="post.html?file=${post.filename}" class="post-title">${post.title}</a></h2>
+                    ${postDate ? `<time class="post-date">${postDate}</time>` : ''}
+                </header>
+                <div class="post-excerpt">
+                    ${post.excerpt}
+                </div>
+                <footer class="post-footer">
+                    <a href="post.html?file=${post.filename}" class="read-more">Read more →</a>
+                </footer>
+            `;
+            
+            return article;
+        }
+
+        // Load posts when page loads
+        document.addEventListener('DOMContentLoaded', loadBlogPosts);
+    </script>
+</body>
+</html>

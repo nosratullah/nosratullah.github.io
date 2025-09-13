@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">   
     <!-- <title>Sketch</title> -->
     <link rel="stylesheet" href="style.css">    <!-- CSS only -->
     <!-- <link rel="stylesheet" href="https://unpkg.com/nexmoe.css"> -->
@@ -12,23 +12,24 @@
   </head>
 
   <body>
-  
-        <nav class="hero">
-          <a>
-            <h1 href="index.html"> Nosrat</h1>
-          </a>
-          <div id="menu"></div>
+    <!-- Top Navigation -->
+    <nav class="hero">
+      <a>
+        <h1 href="index.html"> Nosrat</h1>
+      </a>
+      <div class="nav-controls">
+        <div id="menu"></div>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+          <i class="fa-regular fa-moon" id="theme-icon"></i>
+        </button>
+      </div>
+    </nav>
 
-    <script>
-        fetch('menu.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('menu').innerHTML = data;
-            });
-    </script>
-        </nav><!-- .nav-menu -->
-        <header>
-          <img src="images/profile.png" alt="" width="200px">
+    <div class="layout-container">
+      <!-- Left Side Panel -->
+      <aside class="side-panel">
+        <header class="profile-section">
+          <img src="images/profile.png" alt="Profile" class="profile-image">
           <h3>
             Hey &#128075;, I'm Nosrat, a PhD student in <a href="https:www.ndlab.ch" target="_blank" rel="noopener noreferrer">Neural Dynamics Lab </a>
           </h3>
@@ -38,12 +39,55 @@
           <h5>
             Follow me here &#128071;
           </h5>
-          <a href="https://www.github.com/nosratullah" class="fa fa-github" aria-hidden="true" target="_blank" rel="noopener noreferrer"></a>
-          <!-- <a href="https://www.twitter.com/nosratullah" target="_blank" rel="noopener noreferrer" class="fa-brands fa-bluesky"></a> -->
-          <a href="https://www.linkedin.com/in/nosratullah/" target="_blank" rel="noopener noreferrer" class="fa fa-linkedin"></a>  
-          <a href="https://www.instagram.com/nosratullah" target="_blank" rel="noopener noreferrer" class="fa fa-instagram"></a>  
+          <div class="social-icons">
+            <a href="https://www.github.com/nosratullah" class="fa-brands fa-github" aria-hidden="true" target="_blank" rel="noopener noreferrer"></a>
+            <!-- <a href="https://www.twitter.com/nosratullah" target="_blank" rel="noopener noreferrer" class="fa-brands fa-bluesky"></a> -->
+            <a href="https://www.linkedin.com/in/nosratullah/" target="_blank" rel="noopener noreferrer" class="fa-brands fa-linkedin"></a>  
+            <a href="https://bsky.app/profile/nosrat.bsky.social" target="_blank" rel="noopener noreferrer" class="fa-brands fa-bluesky" aria-label="Bluesky"></a>  
+          </div>
         </header>
-        <!-- <i class="fa-brands fa-bluesky"></i> -->
-  <script src="sketch.js"></script>
+      </aside>
+
+      <!-- Main Content Area for Sketch -->
+      <main class="main-content">
+        <div id="sketch-container"></div>
+      </main>
+    </div>
+
+    <script>
+        fetch('menu.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('menu').innerHTML = data;
+            });
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+
+        // Check for saved theme preference or default to light mode
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.className = 'fa-regular fa-sun';
+            } else {
+                themeIcon.className = 'fa-regular fa-moon';
+            }
+        }
+    </script>
+  <script src="sketch_lorenz.js"></script>
   </body>
 </html>

@@ -28,10 +28,16 @@ function setup() {
 }
 
 function draw() {
+  // Check theme and set background accordingly
+  let theme = document.body.getAttribute('data-theme') || 'light';
+  let bgColor = theme === 'dark' ? (17, 17, 17) : (255, 255, 255); // Black for dark mode, white for light mode
+  let bgAlpha = theme === 'dark' ? 20 : 30; // Slight trail effect
+  
+  background(bgColor, bgAlpha);
   // if (frameCount === 1) {
   //   capturer.start();
   // }
-  background(17, 17, 17);
+  // background(17, 17, 17);
   ambientLight(100, 100, 100);
   pointLight(250, 250, 250, 100, 100, 0);
   pointLight(250, 250, 250, -100, -100, 0);
@@ -66,7 +72,9 @@ function draw() {
       // rotateY(angle * n); // Rotate the circle 45 degrees on the Y axis
       rotateZ(angle * m);
       noFill();
-      stroke('white');
+      let stColor = theme === 'light' ? (17, 17, 17) : (255, 255, 255); // Black for dark mode, 
+      stroke(stColor);
+      // background(bgColor, bgAlpha);
       strokeWeight(.2);
       circle(0, 0, big_radius); // The diameter of the circle is twice the radius of the sphere
       }

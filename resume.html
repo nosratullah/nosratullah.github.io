@@ -5,7 +5,7 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <!-- <link rel="stylesheet" href="https://unpkg.com/nexmoe.css"> -->
    <link rel="stylesheet" type="text/css" href="style.css">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">   
    <script src="libraries/p5.min.js"></script>
     <script src="libraries/p5.sound.min.js"></script>
    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
@@ -17,7 +17,14 @@
       <a>
         <h1> Nosrat</h1>
       </a>
-      <div id="menu"></div>
+      
+      <div class="nav-controls">
+         <div id="menu"></div>
+         <!-- Theme toggle button -->
+         <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+            <i class="fa-regular fa-moon" id="theme-icon"></i>
+         </button>
+      </div>
 
     <script>
         fetch('menu.html')
@@ -28,153 +35,190 @@
     </script>
     </nav><!-- .nav-menu -->
    
-   <div class="container">
-      <h2>Education</h2>
-   
-        <details>
-            <summary>Details</summary>
-            <ul>
-                <li>
-                   <b>University of Geneva, Geneva, Switzerland - Ph.D. Candidate of Neuroscience</b>
-                   <ul>
-                      <li>July 2021 - July 2023</li>
-                   </ul>
-                </li>
-                <li>
-                   <b>Institute for Advanced Studies in Basic Sciences, Zanjan, Iran - Master of Computational Neuroscience</b>
-                   <ul>
-                      <li>1 Sept 2018 - 15 Feb 2021</li>
-                   </ul>
-                </li>
-                <li>
-                   <b>Yazd University, Yazd, Iran - Bachelor of Physics</b>
-                   <ul>
-                      <li>Sept 2013 - March 2017</li>
-                   </ul>
-                </li>
-          </ul>
-        </details>
-   </div>
+   <main class="resume-container">
+      <!-- Header Section -->
+      <section class="resume-header">
+         <h1>Nosrat Mohammadi</h1>
+         <p class="title">PhD Candidate in Neuroscience</p>
+         <div class="contact-info">
+            <span>Neural Dynamics Lab, University of Geneva</span>
+            <span>•</span>
+            <span>Geneva, Switzerland</span>
+         </div>
+      </section>
 
-   <div class="container">
-      <h2>Research Interest</h2>
-   
-      <ul>
-            Neural dynamics, manifold and low-dimensional organizations
-      </ul>
-   </div>
+      <!-- Education Section -->
+      <section class="resume-section">
+         <h2>Education</h2>
+         <div class="entry">
+            <div class="entry-header">
+               <h3>PhD in Neuroscience</h3>
+               <span class="date">2021 - 2025</span>
+            </div>
+            <p class="institution">University of Geneva, Geneva, Switzerland</p>
+            <p class="description">Neural Dynamics Lab - Focus on theoretical aspects of neural manifolds</p>
+         </div>
+         
+         <div class="entry">
+            <div class="entry-header">
+               <h3>MSc in Computational Neuroscience</h3>
+               <span class="date">2018 - 2021</span>
+            </div>
+            <p class="institution">Institute for Advanced Studies in Basic Sciences, Zanjan, Iran</p>
+         </div>
+         
+         <div class="entry">
+            <div class="entry-header">
+               <h3>BSc in Physics</h3>
+               <span class="date">2013 - 2017</span>
+            </div>
+            <p class="institution">Yazd University, Yazd, Iran</p>
+         </div>
+      </section>
 
-   <div class="container">
-      <h2>Publications and Presentations</h2>
-  
-      <ul>
-          <li>
-            <!-- provide a hyper link -->
-              <a href="https://doi.org/10.1101/2024.12.17.628339" target="_blank">From spiking neuronal networks to interpretable dynamics: a diffusion-approximation framework</a>
-              <ul>
-                  <li>December 2024</li>
-                  <li><strong>Nosrat Mohammadi</strong>, Wilson Truccolo, Sydney S Cash, Anne-Lise Giraud, Timothée Proix</li>
-              </ul>
-          </li>
-          <details>
-            <summary>More</summary>
-            <li>
-                <a href="http://doi.org/10.12751/nncn.bc2023.022" target="_blank">Stability of Point-process Generalized Linear Models of neural activity during speech processing - Poster Presentation at LNDS retreat, Switzerland</a>
-              <ul>
-                  <li>September 2022</li>
-                  <li><strong>Nosratullah Mohammadi</strong>, Anne-Lise Giraud, Timothée Proix</li>
-              </ul>
-                <b>Discovering low-dimensional interpretable dynamics from high-dimensional neuronal recordings - Poster Presentation FENS forum 2022, Paris</b>
-                <ul>
-                    <li>July 2022</li>
-                    <li><strong>Nosratullah Mohammadi</strong>, Anne-Lise Giraud, Timothée Proix</li>
-                </ul>
-            </li>
-            <li>
-                <b>Discovering low-dimensional interpretable dynamics from high-dimensional neuronal recordings - Poster Presentation ABIM Conference on Human Neuroscience</b>
-                <ul>
-                    <li>Jan 2022</li>
-                    <li><strong>Nosratullah Mohammadi</strong>, Anne-Lise Giraud, Timothée Proix</li>
-                </ul>
-            </li>
-            <li>
-                <b>Synaptic time constants and Brain Rhythms - Online Presentation | Project-Encephalon Journal Club 2021</b>
-                <ul>
-                    <li>Feb 2021</li>
-                </ul>
-            </li>
-            <li>
-                <b>Instantaneous Modulation of Gamma Rhythm by the difference of Time Constants of Inhibitory/Excitatory Synapses - Online Presentation | Neuromatch conference 3</b>
-                <ul>
-                    <li>Oct 2020</li>
-                    <li><strong>Nosratullah Mohammadi</strong>, Alireza Valizadeh</li>
-                </ul>
-            </li>
-            <li>
-                <b>The effect of engagement on neural response time - Online Presentation | Neuromatch Academy Summer School Project Presentation</b>
-                <ul>
-                    <li>Jul 2020</li>
-                    <li>Ramya Yellapragada, <strong>Nosratullah Mohammadi</strong>, Michel Utterback, Lindy Quek, R Senathipathy, Benjamin Adric Dunn.</li>
-                </ul>
-            </li>
-            <li>
-                <b>Obtaining the 21-cm line of neutral Hydrogen from Spectrum of J1639+1127. Annual Physics Conference of Iran, Shiraz University</b>
-                <ul>
-                    <li>Aug 2017</li>
-                    <li><strong>Nosratullah Mohammadi</strong>, Mohammad H. Khosravi, Zahra Rezaei.</li>
-                </ul>
-            </li>
-          </details> 
-      </ul>
- 
-    </div>
+      <!-- Research Interests Section -->
+      <section class="resume-section">
+         <h2>Research Interests</h2>
+         <p>Neural dynamics, manifold and low-dimensional organizations, spiking neuronal networks, interpretable dynamics</p>
+      </section>
 
-    <div class="container">
-        <h2>Teaching Assistant</h2>
-        <ul>
-            <li>
-                <b>Neural dynamics class for master students (2023) </b>
-            </li>
-            <li>
-                <b> 
-                    Neuromatch Computational Neuroscience Summer School (2021)
-                </b>
-            </li>
-            <li>
-                <b> 
-                    Numerical Programming and Data Analysis in Econophysics course (2020)
-                </b>
-            </li>
-            <li>
-                <b> 
-                    Python Programming for Physics Workshop (2017)
-                </b>
-            </li>
-                <!-- <details>
-                <summary>More</summary>
-                </details>
-             -->
-        </ul>
-    </div>
-    <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, iste iusto quas eligendi corporis id eius corrupti temporibus velit? Molestias harum voluptatibus veritatis explicabo ut velit deserunt, saepe sit commodi?</p> -->
-    <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, iste iusto quas eligendi corporis id eius corrupti temporibus velit? Molestias harum voluptatibus veritatis explicabo ut velit deserunt, saepe sit commodi?</p> -->
-    <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, iste iusto quas eligendi corporis id eius corrupti temporibus velit? Molestias harum voluptatibus veritatis explicabo ut velit deserunt, saepe sit commodi?</p> -->
-    <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, iste iusto quas eligendi corporis id eius corrupti temporibus velit? Molestias harum voluptatibus veritatis explicabo ut velit deserunt, saepe sit commodi?</p> -->
+      <!-- Publications Section -->
+      <section class="resume-section">
+         <h2>Publications & Presentations</h2>
+         
+         <div class="entry">
+            <div class="entry-header">
+               <h3><a href="https://doi.org/10.1101/2024.12.17.628339" target="_blank">From spiking neuronal networks to interpretable dynamics: a diffusion-approximation framework</a></h3>
+               <span class="date">Dec 2024</span>
+            </div>
+            <p class="authors"><strong>Nosrat Mohammadi</strong>, Wilson Truccolo, Sydney S Cash, Anne-Lise Giraud, Timothée Proix</p>
+         </div>
 
-    <!-- Teaching Assistant:
-Neural dynamics class for master students 
-University of Geneva, Geneva, Switzerland - Spring 2023
-Computational Neuroscience Summer School
-Neuromatch summer school - Summer 2021
-Numerical Programming and Data Analysis in Econophysics course
-Institute for Advanced Studies in Basic Sciences (IASBS) - Spring 2020 -->
+         <div class="entry">
+            <div class="entry-header">
+               <h3><a href="http://doi.org/10.12751/nncn.bc2023.022" target="_blank">Stability of Point-process Generalized Linear Models of neural activity during speech processing</a></h3>
+               <span class="date">Sep 2022</span>
+            </div>
+            <p class="authors"><strong>Nosratullah Mohammadi</strong>, Anne-Lise Giraud, Timothée Proix</p>
+            <p class="venue">Poster Presentation at LNDS retreat, Switzerland</p>
+         </div>
+
+         <div class="entry">
+            <div class="entry-header">
+               <h3>Discovering low-dimensional interpretable dynamics from high-dimensional neuronal recordings</h3>
+               <span class="date">Jul 2022</span>
+            </div>
+            <p class="authors"><strong>Nosratullah Mohammadi</strong>, Anne-Lise Giraud, Timothée Proix</p>
+            <p class="venue">Poster Presentation, FENS Forum 2022, Paris</p>
+         </div>
+
+         <div class="entry">
+            <div class="entry-header">
+               <h3>Discovering low-dimensional interpretable dynamics from high-dimensional neuronal recordings</h3>
+               <span class="date">Jan 2022</span>
+            </div>
+            <p class="authors"><strong>Nosratullah Mohammadi</strong>, Anne-Lise Giraud, Timothée Proix</p>
+            <p class="venue">Poster Presentation, ABIM Conference on Human Neuroscience</p>
+         </div>
+
+         <div class="entry">
+            <div class="entry-header">
+               <h3>Instantaneous Modulation of Gamma Rhythm by the difference of Time Constants of Inhibitory/Excitatory Synapses</h3>
+               <span class="date">Oct 2020</span>
+            </div>
+            <p class="authors"><strong>Nosratullah Mohammadi</strong>, Alireza Valizadeh</p>
+            <p class="venue">Online Presentation, Neuromatch Conference 3</p>
+         </div>
+
+         <div class="entry">
+            <div class="entry-header">
+               <h3>The effect of engagement on neural response time</h3>
+               <span class="date">Jul 2020</span>
+            </div>
+            <p class="authors">Ramya Yellapragada, <strong>Nosratullah Mohammadi</strong>, Michel Utterback, Lindy Quek, R Senathipathy, Benjamin Adric Dunn</p>
+            <p class="venue">Neuromatch Academy Summer School Project Presentation</p>
+         </div>
+
+         <div class="entry">
+            <div class="entry-header">
+               <h3>Obtaining the 21-cm line of neutral Hydrogen from Spectrum of J1639+1127</h3>
+               <span class="date">Aug 2017</span>
+            </div>
+            <p class="authors"><strong>Nosratullah Mohammadi</strong>, Mohammad H. Khosravi, Zahra Rezaei</p>
+            <p class="venue">Annual Physics Conference of Iran, Shiraz University</p>
+         </div>
+      </section>
+
+      <!-- Teaching Section -->
+      <section class="resume-section">
+         <h2>Teaching Experience</h2>
+         
+         <div class="entry">
+            <div class="entry-header">
+               <h3>Teaching Assistant - Neural Dynamics</h3>
+               <span class="date">2023</span>
+            </div>
+            <p class="institution">University of Geneva, Master's level course</p>
+         </div>
+         
+         <div class="entry">
+            <div class="entry-header">
+               <h3>Teaching Assistant - Computational Neuroscience Summer School</h3>
+               <span class="date">2021</span>
+            </div>
+            <p class="institution">Neuromatch Academy</p>
+         </div>
+         
+         <div class="entry">
+            <div class="entry-header">
+               <h3>Teaching Assistant - Numerical Programming and Data Analysis in Econophysics</h3>
+               <span class="date">2020</span>
+            </div>
+            <p class="institution">Institute for Advanced Studies in Basic Sciences (IASBS)</p>
+         </div>
+         
+         <div class="entry">
+            <div class="entry-header">
+               <h3>Instructor - Python Programming for Physics Workshop</h3>
+               <span class="date">2017</span>
+            </div>
+            <p class="institution">Yazd University</p>
+         </div>
+      </section>
+   </main>
 
    <footer>
-      <a href="https://www.github.com/nosratullah" target="_blank" rel="noopener noreferrer" class="fa fa-github" aria-hidden="true"></a>
-         <a href="https://www.twitter.com/nosratullah" target="_blank" rel="noopener noreferrer" class="fa fa-twitter"></a>
-         <a href="https://www.linkedin.com/in/nosratullah/" target="_blank" rel="noopener noreferrer" class="fa fa-linkedin"></a>  
-         <a href="https://www.instagram.com/nosratullah" target="_blank" rel="noopener noreferrer" class="fa fa-instagram"></a>  
+      <a href="https://www.github.com/nosratullah" target="_blank" rel="noopener noreferrer" class="fa-brands fa-github" aria-hidden="true"></a>
+         <a href="https://www.twitter.com/nosratullah" target="_blank" rel="noopener noreferrer" class="fa-brands fa-twitter"></a>
+         <a href="https://www.linkedin.com/in/nosratullah/" target="_blank" rel="noopener noreferrer" class="fa-brands fa-linkedin"></a>  
+         <a href="https://bsky.app/profile/nosrat.bsky.social" target="_blank" rel="noopener noreferrer" class="fa-brands fa-bluesky" aria-label="Bluesky"></a>  
    </footer>
+   
+   <!-- Theme toggle script -->
+   <script>
+      // Theme toggle functionality
+      function toggleTheme() {
+         const currentTheme = document.documentElement.getAttribute('data-theme');
+         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+         
+         document.documentElement.setAttribute('data-theme', newTheme);
+         localStorage.setItem('theme', newTheme);
+         
+         // Update icon
+         const icon = document.getElementById('theme-icon');
+         icon.className = newTheme === 'dark' ? 'fa-regular fa-sun' : 'fa-regular fa-moon';
+      }
+      
+      // Load saved theme on page load
+      document.addEventListener('DOMContentLoaded', function() {
+         const savedTheme = localStorage.getItem('theme') || 'light';
+         document.documentElement.setAttribute('data-theme', savedTheme);
+         
+         // Update icon
+         const icon = document.getElementById('theme-icon');
+         icon.className = savedTheme === 'dark' ? 'fa-regular fa-sun' : 'fa-regular fa-moon';
+      });
+   </script>
    
    <!-- <script src="resume_bg.js"></script> -->
    

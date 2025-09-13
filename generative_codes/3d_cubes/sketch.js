@@ -21,7 +21,12 @@ function setup() {
 }
 
 function draw() {
-  background(17, 17, 17);
+  // Check theme and set background accordingly
+  let theme = document.body.getAttribute('data-theme') || 'light';
+  let bgColor = theme === 'dark' ? (17, 17, 17) : (255, 255, 255); // Black for dark mode, white for light mode
+  let bgAlpha = theme === 'dark' ? 20 : 30; // Slight trail effect
+  background(bgColor, bgAlpha);
+  // background(17, 17, 17);
   const smallCube = smallCubeSlider.value();
   const bigCube = bigCubeSlider.value();
   const step = stepSlider.value();

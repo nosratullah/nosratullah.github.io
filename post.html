@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8            if (newTheme === 'dark') {
+                themeIcon.className = 'fa-regular fa-sun';
+            } else {
+                themeIcon.className = 'fa-regular fa-moon';
+            }  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- Markdown parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <title>Post - Nosrat</title>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="hero">
+        <a>
+            <h1 href="index.html"> Nosrat</h1>
+        </a>
+        <div class="nav-controls">
+            <div id="menu"></div>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                <i class="fa-regular fa-moon" id="theme-icon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="post-container">
+        <nav class="post-nav">
+            <a href="blog.html" class="back-link">← Back to Blog</a>
+        </nav>
+        
+        <article id="post-content" class="post-content">
+            <!-- Post content will be loaded here -->
+        </article>
+    </main>
+
+    <script>
+        // Load menu
+        fetch('menu.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('menu').innerHTML = data;
+            });
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+
+        // Check for saved theme preference or default to light mode
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.className = 'fa fa-sun-o';
+            } else {
+                themeIcon.className = 'fa-regular fa-moon';
+            }
+        }
+
+        // Load individual post
+        async function loadPost() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postFile = urlParams.get('file');
+            
+            if (!postFile) {
+                document.getElementById('post-content').innerHTML = '<p>Post not found.</p>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`blog/${postFile}`);
+                if (!response.ok) {
+                    throw new Error('Post not found');
+                }
+                
+                const markdown = await response.text();
+                const post = parseMarkdownPost(markdown);
+                
+                // Update page title
+                document.title = `${post.title} - Nosrat`;
+                
+                // Render post
+                const postContainer = document.getElementById('post-content');
+                const postDate = post.date ? new Date(post.date).toLocaleDateString() : '';
+                
+                postContainer.innerHTML = `
+                    <header class="post-header">
+                        <h1>${post.title}</h1>
+                        ${postDate ? `<time class="post-date">${postDate}</time>` : ''}
+                    </header>
+                    <div class="post-body">
+                        ${marked.parse(post.content)}
+                    </div>
+                `;
+                
+            } catch (error) {
+                document.getElementById('post-content').innerHTML = '<p>Error loading post.</p>';
+                console.error('Error loading post:', error);
+            }
+        }
+
+        function parseMarkdownPost(markdown) {
+            const lines = markdown.split('\n');
+            const post = {
+                title: 'Untitled',
+                date: '',
+                content: markdown
+            };
+
+            // Parse frontmatter if it exists
+            if (lines[0] === '---') {
+                let frontmatterEnd = -1;
+                for (let i = 1; i < lines.length; i++) {
+                    if (lines[i] === '---') {
+                        frontmatterEnd = i;
+                        break;
+                    }
+                }
+                
+                if (frontmatterEnd > 0) {
+                    // Parse frontmatter
+                    for (let i = 1; i < frontmatterEnd; i++) {
+                        const line = lines[i];
+                        if (line.includes(':')) {
+                            const [key, ...valueParts] = line.split(':');
+                            const value = valueParts.join(':').trim();
+                            post[key.trim()] = value;
+                        }
+                    }
+                    // Remove frontmatter from content
+                    post.content = lines.slice(frontmatterEnd + 1).join('\n');
+                }
+            }
+
+            return post;
+        }
+
+        // Load post when page loads
+        document.addEventListener('DOMContentLoaded', loadPost);
+    </script>
+</body>
+</html>

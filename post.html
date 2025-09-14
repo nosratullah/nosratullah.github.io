@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8            if (newTheme === 'dark') {
-                themeIcon.className = 'fa-regular fa-sun';
-            } else {
-                themeIcon.className = 'fa-regular fa-moon';
-            }  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -21,9 +18,6 @@
         </a>
         <div class="nav-controls">
             <div id="menu"></div>
-            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
-                <i class="fa-regular fa-moon" id="theme-icon"></i>
-            </button>
         </div>
     </nav>
 
@@ -42,35 +36,27 @@
         fetch('menu.html')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('menu').innerHTML = data;
+                const parser = new DOMParser();
+                const menuDoc = parser.parseFromString(data, 'text/html');
+                
+                // Get the menu ul and theme toggle button
+                const menuUl = menuDoc.querySelector('ul');
+                const themeToggle = menuDoc.querySelector('.theme-toggle');
+                
+                // Insert menu ul into the menu div
+                document.getElementById('menu').appendChild(menuUl);
+                
+                // Insert theme toggle into nav-controls (after menu div)
+                document.querySelector('.nav-controls').appendChild(themeToggle);
+                
+                // Execute any scripts from the menu
+                const scripts = menuDoc.querySelectorAll('script');
+                scripts.forEach(script => {
+                    const newScript = document.createElement('script');
+                    newScript.textContent = script.textContent;
+                    document.head.appendChild(newScript);
+                });
             });
-
-        // Theme toggle functionality
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const body = document.body;
-
-        // Check for saved theme preference or default to light mode
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        body.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
-
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            body.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-        });
-
-        function updateThemeIcon(theme) {
-            if (theme === 'dark') {
-                themeIcon.className = 'fa fa-sun-o';
-            } else {
-                themeIcon.className = 'fa-regular fa-moon';
-            }
-        }
 
         // Load individual post
         async function loadPost() {

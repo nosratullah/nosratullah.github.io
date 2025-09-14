@@ -16,106 +16,221 @@
         
         <div class="nav-controls">
            <div id="menu"></div>
-           <!-- Theme toggle button -->
-           <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-              <i class="fa-regular fa-moon" id="theme-icon"></i>
-           </button>
         </div>
 
     <script>
         fetch('menu.html')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('menu').innerHTML = data;
+                const parser = new DOMParser();
+                const menuDoc = parser.parseFromString(data, 'text/html');
+                
+                // Get the menu ul and theme toggle button
+                const menuUl = menuDoc.querySelector('ul');
+                const themeToggle = menuDoc.querySelector('.theme-toggle');
+                
+                // Insert menu ul into the menu div
+                document.getElementById('menu').appendChild(menuUl);
+                
+                // Insert theme toggle into nav-controls (after menu div)
+                document.querySelector('.nav-controls').appendChild(themeToggle);
+                
+                // Execute any scripts from the menu
+                const scripts = menuDoc.querySelectorAll('script');
+                scripts.forEach(script => {
+                    const newScript = document.createElement('script');
+                    newScript.textContent = script.textContent;
+                    document.head.appendChild(newScript);
+                });
             });
     </script>
     </nav>
-    <div class="grid-wrapper">
-        <div class="tall"><img src="images/boy-in-wind.png" alt="image"></div>
-        <div class=""><img src="images/masque.jpeg" alt="image"></div>
-        <div class="wide"><img src="images/bird-close.jpg" alt="image"></div>
-        <div class="tall"><img src="images/bird-distance.jpg" alt="image"></div>
-        <div class=""><img src="images/bird-mountain 2.jpg" alt="image"></div>
-        <div class=""><img src="images/girl-with-birds.jpg" alt="image"></div>
-        <div class="tall"><img src="images/girl-in-wind.png" alt="image"></div>
-        <div class=""><img src="images/house-2.jpg" alt="image"></div>
-        <div class="tall"><img src="images/portrait.jpg" alt="image"></div>
-        <div class=""><img src="images/house.jpg" alt="image"></div>
-        <div class=""><img src="images/iasbs-2.jpg" alt="image"></div>
-        <div class="tall"><img src="images/tea.jpg" alt="image"></div>
-        <div class=""><img src="images/iasbs-3.jpg" alt="image"></div>
-        <div class=""><img src="images/IASBS.jpg" alt="image"></div>
-        <div class="tall"><img src="images/love.jpg" alt="image"></div>
-        <div class="tall"><img src="images/tree-in-snow.jpg" alt="image"></div>
-        <div class="wide"><img src="images/zanjan-2.jpg" alt="image"></div>
+    
+    <!-- Main content container with proper spacing -->
+    <main style="margin-top: 60px; padding: 2rem;">
+        <!-- Loading message -->
+        <div id="loading" style="text-align: center; padding: 2rem; color: var(--color-text);">
+            Loading gallery...
+        </div>
+        
+        <!-- Dynamic gallery grid -->
+        <div class="grid-wrapper" id="gallery-grid" style="display: none;">
+            <!-- Images will be dynamically loaded here -->
+        </div>
+    </main>
 
-    </div>
-
-    <!-- Image Modal -->
+    <!-- Image Modal with Navigation -->
     <div id="imageModal" class="modal">
         <span class="close">&times;</span>
         <img class="modal-content" id="modalImage">
+        
+        <!-- Navigation arrows -->
+        <div class="modal-nav">
+            <button class="nav-btn prev-btn" onclick="navigateImage('prev')" title="Previous image (←)">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button class="nav-btn next-btn" onclick="navigateImage('next')" title="Next image (→)">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+        
+        <!-- Image counter -->
+        <div class="image-counter" id="imageCounter">
+            1 / 23
+        </div>
     </div>
 
     <script>
-        // Get modal elements
-        const modal = document.getElementById('imageModal');
-        const modalImg = document.getElementById('modalImage');
-        const closeBtn = document.getElementsByClassName('close')[0];
+        // List of all images in the images folder
+        const imageFiles = [
+            'Glacier.jpg',
+            'IASBS.jpg',
+            'IMG_2621.jpg',
+            'bird-close.jpg',
+            'bird-distance.jpg',
+            'bird-mountain 1.jpg',
+            'bird-mountain 2.jpg',
+            'bird-mountain 3.jpg',
+            'bird-mountain.jpg',
+            'boy-in-wind.png',
+            'boy-sad.jpeg',
+            'girl-in-wind.png',
+            'girl-with-birds.jpg',
+            'house-2.jpg',
+            'house.jpg',
+            'iasbs-2.jpg',
+            'iasbs-3.jpg',
+            'love.jpg',
+            'masque.jpeg',
+            'portrait.jpg',
+            'tea.jpg',
+            'tree-in-snow.jpg',
+            'zanjan-2.jpg'
+        ];
         
-        // Add click event to all gallery images
-        const galleryImages = document.querySelectorAll('.grid-wrapper img');
-        galleryImages.forEach(img => {
-            img.addEventListener('click', function() {
-                modal.style.display = 'block';
-                modalImg.src = this.src;
-                modalImg.alt = this.alt;
+        function loadGallery() {
+            const galleryGrid = document.getElementById('gallery-grid');
+            const loadingDiv = document.getElementById('loading');
+            
+            imageFiles.forEach((filename, index) => {
+                // Create image container div
+                const imageDiv = document.createElement('div');
+                
+                // Assign layout class for variety (more conservative distribution)
+                if (index % 8 === 1 || index % 8 === 5) {
+                    imageDiv.className = 'tall';
+                } else if (index % 12 === 2 || index % 12 === 7) {
+                    imageDiv.className = 'wide';
+                }
+                
+                // Create image element
+                const img = document.createElement('img');
+                img.src = `images/${filename}`;
+                img.alt = filename.split('.')[0].replace(/[-_]/g, ' '); // Clean alt text
+                img.loading = 'lazy'; // Lazy loading for performance
+                
+                // Add error handling
+                img.onerror = function() {
+                    console.warn(`Failed to load image: ${filename}`);
+                    imageDiv.style.display = 'none';
+                };
+                
+                // Ensure proper loading
+                img.onload = function() {
+                    console.log(`Loaded: ${filename}`);
+                };
+                
+                // Add click event for modal
+                img.addEventListener('click', function() {
+                    openModal(this.src, this.alt);
+                });
+                
+                imageDiv.appendChild(img);
+                galleryGrid.appendChild(imageDiv);
             });
-        });
-        
-        // Close modal when clicking the X
-        closeBtn.addEventListener('click', function() {
-            modal.style.display = 'none';
-        });
-        
-        // Close modal when clicking outside the image
-        modal.addEventListener('click', function(event) {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-        
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && modal.style.display === 'block') {
-                modal.style.display = 'none';
-            }
-        });
-    </script>
-    
-    <!-- Theme toggle script -->
-    <script>
-        // Theme toggle functionality
-        function toggleTheme() {
-           const currentTheme = document.documentElement.getAttribute('data-theme');
-           const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-           
-           document.documentElement.setAttribute('data-theme', newTheme);
-           localStorage.setItem('theme', newTheme);
-           
-           // Update icon
-           const icon = document.getElementById('theme-icon');
-           icon.className = newTheme === 'dark' ? 'fa-regular fa-sun' : 'fa-regular fa-moon';
+            
+            // Hide loading and show gallery
+            loadingDiv.style.display = 'none';
+            galleryGrid.style.display = 'grid';
         }
         
-        // Load saved theme on page load
+        // Modal functionality with navigation
+        let currentImageIndex = 0;
+        
+        function openModal(src, alt) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            
+            // Find the current image index
+            currentImageIndex = imageFiles.findIndex(filename => src.includes(filename));
+            
+            modal.style.display = 'block';
+            modalImg.src = src;
+            modalImg.alt = alt;
+            updateImageCounter();
+        }
+        
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+        
+        function navigateImage(direction) {
+            if (direction === 'next') {
+                currentImageIndex = (currentImageIndex + 1) % imageFiles.length;
+            } else if (direction === 'prev') {
+                currentImageIndex = (currentImageIndex - 1 + imageFiles.length) % imageFiles.length;
+            }
+            
+            const modalImg = document.getElementById('modalImage');
+            const filename = imageFiles[currentImageIndex];
+            modalImg.src = `images/${filename}`;
+            modalImg.alt = filename.split('.')[0].replace(/[-_]/g, ' ');
+            updateImageCounter();
+        }
+        
+        function updateImageCounter() {
+            const counter = document.getElementById('imageCounter');
+            counter.textContent = `${currentImageIndex + 1} / ${imageFiles.length}`;
+        }
+        
+        // Event listeners for modal
         document.addEventListener('DOMContentLoaded', function() {
-           const savedTheme = localStorage.getItem('theme') || 'light';
-           document.documentElement.setAttribute('data-theme', savedTheme);
-           
-           // Update icon
-           const icon = document.getElementById('theme-icon');
-           icon.className = savedTheme === 'dark' ? 'fa-regular fa-sun' : 'fa-regular fa-moon';
+            const modal = document.getElementById('imageModal');
+            const closeBtn = document.getElementsByClassName('close')[0];
+            
+            // Close modal when clicking the X
+            closeBtn.addEventListener('click', closeModal);
+            
+            // Close modal when clicking outside the image
+            modal.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(event) {
+                if (modal.style.display === 'block') {
+                    switch(event.key) {
+                        case 'Escape':
+                            closeModal();
+                            break;
+                        case 'ArrowRight':
+                        case 'ArrowDown':
+                            event.preventDefault();
+                            navigateImage('next');
+                            break;
+                        case 'ArrowLeft':
+                        case 'ArrowUp':
+                            event.preventDefault();
+                            navigateImage('prev');
+                            break;
+                    }
+                }
+            });
+            
+            // Load the gallery
+            loadGallery();
         });
     </script>
     

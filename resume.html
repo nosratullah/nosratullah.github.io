@@ -3,12 +3,12 @@
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <!-- <link rel="stylesheet" href="https://unpkg.com/nexmoe.css"> -->
    <link rel="stylesheet" type="text/css" href="style.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">   
    <script src="libraries/p5.min.js"></script>
     <script src="libraries/p5.sound.min.js"></script>
-   <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
    <title>Resume</title>
 </head>
 <body>
@@ -20,17 +20,32 @@
       
       <div class="nav-controls">
          <div id="menu"></div>
-         <!-- Theme toggle button -->
-         <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-            <i class="fa-regular fa-moon" id="theme-icon"></i>
-         </button>
       </div>
 
     <script>
         fetch('menu.html')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('menu').innerHTML = data;
+                const parser = new DOMParser();
+                const menuDoc = parser.parseFromString(data, 'text/html');
+                
+                // Get the menu ul and theme toggle button
+                const menuUl = menuDoc.querySelector('ul');
+                const themeToggle = menuDoc.querySelector('.theme-toggle');
+                
+                // Insert menu ul into the menu div
+                document.getElementById('menu').appendChild(menuUl);
+                
+                // Insert theme toggle into nav-controls (after menu div)
+                document.querySelector('.nav-controls').appendChild(themeToggle);
+                
+                // Execute any scripts from the menu
+                const scripts = menuDoc.querySelectorAll('script');
+                scripts.forEach(script => {
+                    const newScript = document.createElement('script');
+                    newScript.textContent = script.textContent;
+                    document.head.appendChild(newScript);
+                });
             });
     </script>
     </nav><!-- .nav-menu -->
@@ -85,7 +100,22 @@
       <!-- Publications Section -->
       <section class="resume-section">
          <h2>Publications & Presentations</h2>
-         
+         <div class="entry">
+            <div class="entry-header">
+               <h3>Geometric reperesentation of speech perception in the human STG neurons</h3>
+               <span class="date">Under prep.</span>
+            </div>
+            <p class="authors"><strong>Nosrat Mohammadi</strong>, Anne-Lise Giraud, Timothée Proix</p>
+         </div>
+
+         <div class="entry">
+            <div class="entry-header">
+               <h3>Computational principles of recurrent neuronal networks</h3>
+               <span class="date">Under prep.</span>
+            </div>
+            <p class="authors"><strong>Nosrat Mohammadi</strong>, Anne-Lise Giraud, Timothée Proix</p>
+         </div>
+
          <div class="entry">
             <div class="entry-header">
                <h3><a href="https://doi.org/10.1101/2024.12.17.628339" target="_blank">From spiking neuronal networks to interpretable dynamics: a diffusion-approximation framework</a></h3>
@@ -101,6 +131,16 @@
             </div>
             <p class="authors"><strong>Nosratullah Mohammadi</strong>, Anne-Lise Giraud, Timothée Proix</p>
             <p class="venue">Poster Presentation at LNDS retreat, Switzerland</p>
+         </div>
+
+         <div class="entry">
+            <div class="entry-header">
+               <h3><a href="https://arrow.tudublin.ie/cgi/viewcontent.cgi?article=1358&context=scschmatart" target="_blank">Neuromatch Academy: a 3-week, online summer school in computational neuroscience</a></h3>
+               <span class="date">2022</span>
+            </div>
+            <p class="authors">
+                Bernard Marius 't Hart, Titipat Achakulvisut, Ayoade Adeyemi, ..., 
+                <strong>Nosrat Mohammadi</strong>, ...</p>
          </div>
 
          <div class="entry">
@@ -188,37 +228,13 @@
    </main>
 
    <footer>
-      <a href="https://www.github.com/nosratullah" target="_blank" rel="noopener noreferrer" class="fa-brands fa-github" aria-hidden="true"></a>
-         <a href="https://www.twitter.com/nosratullah" target="_blank" rel="noopener noreferrer" class="fa-brands fa-twitter"></a>
-         <a href="https://www.linkedin.com/in/nosratullah/" target="_blank" rel="noopener noreferrer" class="fa-brands fa-linkedin"></a>  
-         <a href="https://bsky.app/profile/nosrat.bsky.social" target="_blank" rel="noopener noreferrer" class="fa-brands fa-bluesky" aria-label="Bluesky"></a>  
+      <div class="social-icons">
+            <a href="https://www.github.com/nosratullah" class="fa-brands fa-github" aria-hidden="true" target="_blank" rel="noopener noreferrer"></a>
+            <!-- <a href="https://www.twitter.com/nosratullah" target="_blank" rel="noopener noreferrer" class="fa-brands fa-bluesky"></a> -->
+            <a href="https://www.linkedin.com/in/nosratullah/" target="_blank" rel="noopener noreferrer" class="fa-brands fa-linkedin"></a>  
+            <a href="https://bsky.app/profile/nosrat.bsky.social" target="_blank" rel="noopener noreferrer" class="fa-brands fa-bluesky" aria-label="Bluesky"></a>  
+          </div>
    </footer>
-   
-   <!-- Theme toggle script -->
-   <script>
-      // Theme toggle functionality
-      function toggleTheme() {
-         const currentTheme = document.documentElement.getAttribute('data-theme');
-         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-         
-         document.documentElement.setAttribute('data-theme', newTheme);
-         localStorage.setItem('theme', newTheme);
-         
-         // Update icon
-         const icon = document.getElementById('theme-icon');
-         icon.className = newTheme === 'dark' ? 'fa-regular fa-sun' : 'fa-regular fa-moon';
-      }
-      
-      // Load saved theme on page load
-      document.addEventListener('DOMContentLoaded', function() {
-         const savedTheme = localStorage.getItem('theme') || 'light';
-         document.documentElement.setAttribute('data-theme', savedTheme);
-         
-         // Update icon
-         const icon = document.getElementById('theme-icon');
-         icon.className = savedTheme === 'dark' ? 'fa-regular fa-sun' : 'fa-regular fa-moon';
-      });
-   </script>
    
    <!-- <script src="resume_bg.js"></script> -->
    

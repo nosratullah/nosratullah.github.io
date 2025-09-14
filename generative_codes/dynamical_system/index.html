@@ -17,13 +17,34 @@
       <a>
         <h1 href="index.html"> Nosrat</h1>
       </a>
-     <div id="menu"></div>
+      <div class="nav-controls">
+        <div id="menu"></div>
+      </div>
 
     <script>
         fetch('/menu.html')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('menu').innerHTML = data;
+                const parser = new DOMParser();
+                const menuDoc = parser.parseFromString(data, 'text/html');
+                
+                // Get the menu ul and theme toggle button
+                const menuUl = menuDoc.querySelector('ul');
+                const themeToggle = menuDoc.querySelector('.theme-toggle');
+                
+                // Insert menu ul into the menu div
+                document.getElementById('menu').appendChild(menuUl);
+                
+                // Insert theme toggle into nav-controls (after menu div)
+                document.querySelector('.nav-controls').appendChild(themeToggle);
+                
+                // Execute any scripts from the menu
+                const scripts = menuDoc.querySelectorAll('script');
+                scripts.forEach(script => {
+                    const newScript = document.createElement('script');
+                    newScript.textContent = script.textContent;
+                    document.head.appendChild(newScript);
+                });
             });
     </script>
     </nav><!-- .nav-menu -->

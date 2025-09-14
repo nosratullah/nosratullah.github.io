@@ -17,18 +17,36 @@
       <a>
         <h1 href="index.html"> Nosrat</h1>
       </a>
-      <ul>
-        <li><a href="/index.html" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
-        <li><a href="/resume.html" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Resume</span></a></li>
-        <li><a href="/gallery.html" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Gallery</span></a></li>
-        <li class="dropdown"><a href="#"><i class="bx bx-file-blank"></i> <span>GenerativeArt</span> <i class="bi bi-chevron-down"></i></a>
-          <ul>
-             <li><a href="/generative_codes/3d_cubes/index.html">Cubes</a></li>
-             <li><a href="/generative_codes/dynamical_system/index.html">DS</a></li>
-             <li><a href="/generative_codes/3d_sphere/index.html">Atoms</a></li>
+      <div class="nav-controls">
+        <div id="menu"></div>
+      </div>
 
-          </ul>
-      </ul>
+    <script>
+        fetch('/menu.html')
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const menuDoc = parser.parseFromString(data, 'text/html');
+                
+                // Get the menu ul and theme toggle button
+                const menuUl = menuDoc.querySelector('ul');
+                const themeToggle = menuDoc.querySelector('.theme-toggle');
+                
+                // Insert menu ul into the menu div
+                document.getElementById('menu').appendChild(menuUl);
+                
+                // Insert theme toggle into nav-controls (after menu div)
+                document.querySelector('.nav-controls').appendChild(themeToggle);
+                
+                // Execute any scripts from the menu
+                const scripts = menuDoc.querySelectorAll('script');
+                scripts.forEach(script => {
+                    const newScript = document.createElement('script');
+                    newScript.textContent = script.textContent;
+                    document.head.appendChild(newScript);
+                });
+            });
+    </script>
     </nav><!-- .nav-menu -->
     <script src="sketch.js"></script>
   </body>

@@ -9,4 +9,40 @@
         <li><a href="/generative_codes/dynamical_system/index.html">DS</a></li>
         <li><a href="/generative_codes/3d_sphere/index.html">Atoms</a></li>
         </ul>
+    </li>
 </ul>
+
+<!-- Theme toggle button (will be moved to nav-controls by script) -->
+<button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <i class="fa-regular fa-moon" id="theme-icon"></i>
+</button>
+
+<script>
+// Universal theme toggle functionality
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    // Update icon
+    const icon = document.getElementById('theme-icon');
+    if (icon) {
+        icon.className = newTheme === 'dark' ? 'fa-regular fa-sun' : 'fa-regular fa-moon';
+    }
+}
+
+// Initialize theme on menu load
+(function initializeTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    
+    // Update icon when available
+    const icon = document.getElementById('theme-icon');
+    if (icon) {
+        icon.className = savedTheme === 'dark' ? 'fa-regular fa-sun' : 'fa-regular fa-moon';
+    }
+})();
+</script>
+

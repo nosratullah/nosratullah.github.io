@@ -59,7 +59,12 @@ body {
 	background-color: var(--color-bg);
 	color: var(--color-text);
 	line-height: 1.5;
-	font-family: 'Courier', monospace; 
+	font-family: 'Courier', monospace;
+	/* Improve mobile experience */
+	-webkit-overflow-scrolling: touch;
+	scroll-behavior: smooth;
+	/* Prevent zoom on input focus on iOS */
+	-webkit-text-size-adjust: 100%;
 }
 
 /* Top Navigation Styles */
@@ -163,6 +168,9 @@ body {
 	font-size: 1.1rem;
 	padding: 0;
 	position: relative;
+	/* Improve touch interaction */
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .theme-toggle i {
@@ -504,11 +512,15 @@ body {
 @media (max-width: 768px) {
 	body {
 		padding: 0;
+		overflow-x: hidden; /* Prevent horizontal scroll */
 	}
 	
 	.layout-container {
 		flex-direction: column;
-		margin-top: 60px; /* Match the reduced header height */
+		margin-top: 0; /* No margin needed since nav is relative on mobile */
+		height: auto; /* Allow natural height on mobile */
+		min-height: auto; /* Remove min-height constraint */
+		overflow: visible; /* Allow scrolling on mobile */
 	}
 	
 	.hero {
@@ -516,6 +528,7 @@ body {
 		position: relative; /* Remove fixed positioning on mobile */
 		border-bottom: 1px solid var(--color-hover);
 		height: auto; /* Auto height on mobile */
+		margin-bottom: 0; /* Remove any bottom margin */
 	}
 	
 	.side-panel {
@@ -526,6 +539,8 @@ body {
 		padding: 1rem;
 		border-right: none;
 		border-bottom: 2px solid var(--color-hover);
+		overflow-y: visible; /* Allow content to be visible */
+		height: auto; /* Natural height */
 	}
 	
 	.main-content {
@@ -861,6 +876,65 @@ nav {
 	nav ul {
 		text-align: center;
 	}
+	
+	/* Mobile navigation specific styles */
+	.hero {
+		padding: 0.5rem 1rem;
+		height: auto;
+		min-height: 60px;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+	
+	.hero h1 {
+		font-size: 1.3rem;
+	}
+	
+	.nav-controls {
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	
+	#menu ul {
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.2rem;
+	}
+	
+	#menu ul li {
+		margin: 0.1rem;
+	}
+	
+	#menu ul li a {
+		padding: 0.4rem 0.8rem;
+		font-size: 0.9rem;
+		min-width: auto;
+	}
+	
+	/* Theme toggle mobile styles */
+	.theme-toggle {
+		width: 35px;
+		height: 35px;
+		flex-shrink: 0;
+	}
+	
+	.theme-toggle i {
+		font-size: 1rem;
+	}
+	
+	/* Dropdown menus on mobile */
+	nav ul li ul {
+		position: static;
+		display: none;
+		box-shadow: none;
+		border: 1px solid var(--color-hover);
+		margin-top: 0.5rem;
+	}
+	
+	nav ul li:hover ul {
+		display: block;
+	}
 }
 
 nav > a {
@@ -1006,7 +1080,7 @@ article {
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
-	filter: brightness(0) saturate(100%) invert(81%) sepia(46%) saturate(400%) hue-rotate(39deg) brightness(98%) contrast(89%);
+	/* filter: brightness(0) saturate(100%) invert(81%) sepia(46%) saturate(400%) hue-rotate(39deg) brightness(98%) contrast(89%); */
 	vertical-align: middle;
 	margin: 0;
 	padding: 0;
@@ -1014,7 +1088,14 @@ article {
 
 /* Ensure Bluesky icon doesn't inherit font styles */
 .fa-brands.fa-bluesky {
-	font-size: 0; /* Hide any potential text */
+	/* font-size: 0; Hide any potential text */
+	padding: 20px;  
+	color: #9acd32;
+  	text-align: center;  
+	margin: 5px 2px;  
+	font-size: 30px;  
+	width: 50px;
+	display: inline-block;
 }
 
 /* Grid gallery */
@@ -1058,7 +1139,6 @@ img {
 
 /* Responsiveness */
 @media screen and (max-width: 600px) {
-
 	.wide{
 		grid-column: span 1;
 	}
@@ -1068,6 +1148,56 @@ img {
 	.big{
 		grid-column: span 1;
 		grid-row: span 1;
+	}
+	
+	/* Better grid layout for mobile */
+	.grid-wrapper {
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		padding: 5px;
+		grid-gap: 8px;
+		grid-auto-rows: 180px;
+	}
+}
+
+/* Additional mobile improvements */
+@media screen and (max-width: 480px) {
+	.grid-wrapper {
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		grid-auto-rows: 150px;
+		padding: 5px;
+		grid-gap: 5px;
+	}
+	
+	/* Better touch targets for mobile */
+	.theme-toggle {
+		width: 40px;
+		height: 40px;
+		touch-action: manipulation;
+	}
+	
+	/* Improved modal for very small screens */
+	.modal-content {
+		max-width: 95%;
+		max-height: 70%;
+	}
+	
+	.modal {
+		padding-top: 40px;
+	}
+	
+	/* Better spacing for hero on small screens */
+	.hero {
+		padding: 0.3rem 0.5rem;
+	}
+	
+	.hero h1 {
+		font-size: 1.2rem;
+	}
+	
+	/* Adjust navigation for very small screens */
+	#menu ul li a {
+		padding: 0.3rem 0.6rem;
+		font-size: 0.8rem;
 	}
 }
 
@@ -1178,6 +1308,86 @@ div.container:last-child {
 .close:focus {
   color: #9acd32;
   text-decoration: none;
+}
+
+/* Modal navigation styles */
+.modal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  padding: 15px 20px;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  z-index: 1001;
+}
+
+.modal-nav:hover {
+  background-color: rgba(154, 205, 50, 0.8);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.modal-nav.prev {
+  left: 20px;
+}
+
+.modal-nav.next {
+  right: 20px;
+}
+
+.image-counter {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  z-index: 1001;
+}
+
+.navigation-hint {
+  position: absolute;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  text-align: center;
+  z-index: 1001;
+}
+
+/* Mobile responsive navigation */
+@media (max-width: 768px) {
+  .modal-nav {
+    padding: 12px 16px;
+    font-size: 20px;
+  }
+  
+  .modal-nav.prev {
+    left: 10px;
+  }
+  
+  .modal-nav.next {
+    right: 10px;
+  }
+  
+  .image-counter {
+    bottom: 15px;
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+  
+  .navigation-hint {
+    bottom: 55px;
+    font-size: 10px;
+  }
 }
 
 .grid-wrapper > div > img {

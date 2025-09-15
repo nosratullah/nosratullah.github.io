@@ -12,6 +12,9 @@
   </head>
 
   <body>
+    <!-- Full-screen canvas background -->
+    <div id="sketch-container"></div>
+    
     <!-- Top Navigation -->
     <nav class="hero">
       <a>
@@ -22,34 +25,28 @@
       </div>
     </nav>
 
-    <div class="layout-container">
-      <!-- Left Side Panel -->
-      <aside class="side-panel">
-        <header class="profile-section">
-          <img src="images/profile.png" alt="Profile" class="profile-image">
-          <h3>
-            Hey &#128075;, I'm Nosrat, a PhD student in <a href="https:www.ndlab.ch" target="_blank" rel="noopener noreferrer">Neural Dynamics Lab </a>
-          </h3>
-          <h6>
-            I'm working on the theoretical aspects of neural manifolds, trying to understand how the spiking activity of neuronal networks gives rise to low-dimensional spatio-temporal patterns.
-          </h6>
-          <h5>
-            Follow me here &#128071;
-          </h5>
-          <div class="social-icons">
-            <a href="https://www.github.com/nosratullah" class="fa-brands fa-github" aria-hidden="true" target="_blank" rel="noopener noreferrer"></a>
-            <!-- <a href="https://www.twitter.com/nosratullah" target="_blank" rel="noopener noreferrer" class="fa-brands fa-bluesky"></a> -->
-            <a href="https://www.linkedin.com/in/nosratullah/" target="_blank" rel="noopener noreferrer" class="fa-brands fa-linkedin"></a>  
-            <a href="https://bsky.app/profile/nosrat.bsky.social" target="_blank" rel="noopener noreferrer" class="fa-brands fa-bluesky" aria-label="Bluesky"></a>  
-          </div>
-        </header>
-      </aside>
-
-      <!-- Main Content Area for Sketch -->
-      <main class="main-content">
-        <div id="sketch-container"></div>
-      </main>
-    </div>
+    <!-- Floating Profile Panel -->
+    <aside class="side-panel">
+      <header class="profile-section">
+        <img src="images/profile.png" alt="Profile" class="profile-image">
+        <h3>
+          Hey &#128075;, I'm Nosrat, a PhD student in <a href="https:www.ndlab.ch" target="_blank" rel="noopener noreferrer">Neural Dynamics Lab </a>
+        </h3>
+        <h6>
+          I'm working on computational aspects of speech perception in the brain. Specifically, I am trying to understand how network of spiking neurons can give rise to spatiotemporal patterns that support speech processing. For this quesiton, I use dynamical system theory to analyze networks behavior.
+          
+        </h6>
+        <h5>
+          You can follow me here &#128071;
+        </h5>
+        <div class="social-icons">
+          <a href="https://www.github.com/nosratullah" class="fa-brands fa-github" aria-hidden="true" target="_blank" rel="noopener noreferrer"></a>
+          <!-- <a href="https://www.twitter.com/nosratullah" target="_blank" rel="noopener noreferrer" class="fa-brands fa-bluesky"></a> -->
+          <a href="https://www.linkedin.com/in/nosratullah/" target="_blank" rel="noopener noreferrer" class="fa-brands fa-linkedin"></a>  
+          <a href="https://bsky.app/profile/nosrat.bsky.social" target="_blank" rel="noopener noreferrer" class="fa-brands fa-bluesky" aria-label="Bluesky"></a>  
+        </div>
+      </header>
+    </aside>
 
     <script>
         fetch('menu.html')

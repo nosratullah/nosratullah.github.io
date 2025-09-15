@@ -4,7 +4,7 @@ var container;
 var canvas;
 
 // Camera controls
-var cameraDistance = 120;
+var cameraDistance = 50;
 var cameraAngleX = 0;
 var cameraAngleY = 0;
 var isDragging = false;
@@ -32,28 +32,24 @@ var colorPalette = [
 ];
 
 function windowResized() {
-  container = document.getElementById('sketch-container');
-  if (container) {
-    // Calculate the available space considering the layout
-    let availableWidth = container.offsetWidth;
-    let availableHeight = window.innerHeight - 80; // Subtract header height (60px)
-    
-    resizeCanvas(availableWidth, availableHeight);
-  }
+  // Use full viewport dimensions
+  let availableWidth = window.innerWidth;
+  let availableHeight = window.innerHeight;
+  
+  console.log(`Resize canvas dimensions: ${availableWidth} x ${availableHeight}`);
+  resizeCanvas(availableWidth, availableHeight);
 }
 
 function setup() {
   container = document.getElementById('sketch-container');
-  if (container) {
-    // Calculate the available space considering the layout
-    let availableWidth = container.offsetWidth;
-    let availableHeight = window.innerHeight - 60; // Subtract header height (60px)
-    
-    canvas = createCanvas(availableWidth, availableHeight, WEBGL);
-    canvas.parent('sketch-container');
-  } else {
-    canvas = createCanvas(windowWidth, windowHeight, WEBGL);
-  }
+  
+  // Use full viewport dimensions
+  let availableWidth = window.innerWidth;
+  let availableHeight = window.innerHeight;
+  
+  console.log(`Canvas dimensions: ${availableWidth} x ${availableHeight}`);
+  canvas = createCanvas(availableWidth, availableHeight, WEBGL);
+  canvas.parent('sketch-container');
   
   canvas.style('z-index', '-1');
   background(0);
@@ -86,7 +82,7 @@ function draw() {
     cameraX,     // X position
     cameraY,     // Y position  
     cameraZ,     // Z position
-    0, 0, 100,    // Look at: Slightly above center where action happens
+    0, 0, 120,    // Look at: Slightly above center where action happens
     0, 0, -1      // Up vector
   );
   

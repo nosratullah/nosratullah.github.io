@@ -240,7 +240,7 @@ function mouseDragged() {
     
     // Update camera angles based on mouse movement
     cameraAngleY += deltaX * 0.01; // Horizontal rotation
-    cameraAngleX -= deltaY * 0.01; // Vertical rotation
+    cameraAngleX += deltaY * 0.01; // Vertical rotation
     
     // Constrain vertical rotation to prevent flipping
     cameraAngleX = constrain(cameraAngleX, -PI/2 + 0.1, PI/2 - 0.1);

@@ -12,9 +12,6 @@
   </head>
 
   <body>
-    <!-- Full-screen canvas background -->
-    <div id="sketch-container"></div>
-    
     <!-- Top Navigation -->
     <nav class="hero">
       <a>
@@ -46,9 +43,12 @@
           <a href="https://bsky.app/profile/nosrat.bsky.social" target="_blank" rel="noopener noreferrer" class="fa-brands fa-bluesky" aria-label="Bluesky"></a>  
         </div>
       </header>
-    </aside>
+  </aside>
 
-    <script>
+  <!-- Full-screen canvas background (moved below header/profile so mobile stacks correctly) -->
+  <div id="sketch-container"></div>
+
+  <script>
         fetch('menu.html')
             .then(response => response.text())
             .then(data => {

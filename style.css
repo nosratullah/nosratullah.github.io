@@ -556,6 +556,17 @@ body {
 	#sketch-container {
 		height: 60vh;
 	}
+
+/* On mobile, ensure the sketch is in-flow (not fixed) so header/profile stack above it */
+@media (max-width: 768px) {
+	#sketch-container {
+		position: relative !important;
+		width: 100% !important;
+		height: 60vh !important;
+		z-index: 1 !important;
+		overflow: hidden;
+	}
+}
 	
 	.profile-image {
 		width: 120px;

@@ -3,7 +3,6 @@ title: Understanding Neural Manifolds
 date: 2025-09-10
 excerpt: A deep dive into the concept of neural manifolds and their role in understanding brain dynamics.
 ---
-
 # Understanding Neural Manifolds: The Hidden Geometry of Neural Activity
 
 Neural manifolds represent one of the most fascinating concepts in modern neuroscience. They provide a mathematical framework for understanding how high-dimensional neural activity can be organized into lower-dimensional structures that capture the essential dynamics of brain function.

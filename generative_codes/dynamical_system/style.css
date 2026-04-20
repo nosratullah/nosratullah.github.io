@@ -7,3 +7,51 @@ canvas {
   display: block;
 }
 
+.info-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 24px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+body[data-theme="dark"] .info-button {
+  background-color: rgba(60, 60, 60, 0.9);
+  color: rgb(230, 230, 230);
+}
+
+body[data-theme="light"] .info-button,
+body:not([data-theme]) .info-button {
+  background-color: rgba(220, 220, 220, 0.9);
+  color: rgb(40, 40, 40);
+}
+
+.info-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.info-button:active {
+  transform: scale(0.95);
+}
+
+#info-popup h3 {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+#info-popup p {
+  font-weight: 500;
+}
+
+#info-popup ul {
+  list-style: none;
+}
+
+#info-popup li {
+  margin: 4px 0;
+}
+

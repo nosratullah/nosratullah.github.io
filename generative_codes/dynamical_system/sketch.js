@@ -2,6 +2,8 @@ let dt = 0.01;
 let trajectory = [];
 let restartButton;
 let equationP, eigenvaluesP;
+let infoButton, infoPopup;
+let infoVisible = false;
 
 function setup() {
   createCanvas(1000, 600);
@@ -37,6 +39,9 @@ function setup() {
   // restartButton = createButton('Restart');
   // restartButton.position(10, height + 150);
   // restartButton.mousePressed(restartSystem);
+
+  // Create info button and pop-up
+  createInfoPanel();
 }
 
 function draw() {
@@ -142,4 +147,76 @@ function mousePressed() {
 
   // Clear the trajectory
   trajectory = [];
+}
+
+function createInfoPanel() {
+  // Create info button
+  infoButton = createButton('🤔');
+  infoButton.class('info-button');
+  infoButton.mousePressed(toggleInfoPopup);
+  infoButton.style('position', 'fixed');
+  infoButton.style('bottom', '20px');
+  infoButton.style('right', '20px');
+  infoButton.style('z-index', '1000');
+
+  // Create info popup
+  infoPopup = createDiv();
+  infoPopup.id('info-popup');
+  infoPopup.style('position', 'fixed');
+  infoPopup.style('bottom', '80px');
+  infoPopup.style('right', '20px');
+  infoPopup.style('width', '300px');
+  infoPopup.style('max-height', '400px');
+  infoPopup.style('overflow-y', 'auto');
+  infoPopup.style('padding', '20px');
+  infoPopup.style('border-radius', '8px');
+  infoPopup.style('box-shadow', '0 4px 12px rgba(0, 0, 0, 0.15)');
+  infoPopup.style('font-family', 'Arial, sans-serif');
+  infoPopup.style('font-size', '13px');
+  infoPopup.style('line-height', '1.5');
+  infoPopup.style('z-index', '999');
+  infoPopup.style('display', 'none');
+  
+  // Set theme-based colors
+  let theme = document.body.getAttribute('data-theme') || 'light';
+  updateInfoPopupStyle(theme);
+  
+  infoPopup.html(`
+    <h3 style="margin-top: 0; margin-bottom: 12px;">2D Linear Dynamical System</h3>
+    <p style="margin: 8px 0;"><strong>What you're seeing:</strong></p>
+    <ul style="margin: 4px 0; padding-left: 16px;">
+      <li><span style="color: rgb(200, 200, 200);">●</span> <strong>Gray dots:</strong> Trajectory showing the system's evolution over time</li>
+      <li><span style="color: rgb(255, 0, 0);">━</span> <strong>Red line:</strong> Nullcline where dx/dt = 0</li>
+      <li><span style="color: rgb(0, 0, 255);">━</span> <strong>Blue line:</strong> Nullcline where dy/dt = 0</li>
+      <li><span style="color: rgb(200, 200, 200);">→</span> <strong>Vector field:</strong> Shows direction and magnitude of flow</li>
+      <li><span style="color: white;">●</span> <strong>White dot:</strong> Current state (position)</li>
+    </ul>
+    <p style="margin: 8px 0;"><strong>Interaction:</strong></p>
+    <ul style="margin: 4px 0; padding-left: 16px;">
+      <li>Click anywhere to set the initial condition</li>
+      <li>Adjust sliders to change the system matrix</li>
+    </ul>
+    <p style="margin: 8px 0; font-size: 12px;">The system is described by: ẋ = Ax where A is a 2×2 matrix</p>
+  `);
+}
+
+function toggleInfoPopup() {
+  infoVisible = !infoVisible;
+  if (infoVisible) {
+    infoPopup.style('display', 'block');
+  } else {
+    infoPopup.style('display', 'none');
+  }
+}
+
+function updateInfoPopupStyle(theme) {
+  if (theme === 'dark') {
+    infoPopup.style('background-color', 'rgba(40, 40, 40, 0.95)');
+    infoPopup.style('color', 'rgb(230, 230, 230)');
+    infoPopup.style('border', '1px solid rgba(100, 100, 100, 0.3)');
+  } else {
+    infoPopup.style('background-color', 'rgba(255, 255, 255, 0.95)');
+    infoPopup.style('color', 'rgb(40, 40, 40)');
+    infoPopup.style('border', '1px solid rgba(150, 150, 150, 0.3)');
+  }
 }

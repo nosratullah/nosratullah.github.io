@@ -1,10 +1,11 @@
 ---
-title: Hello World - Welcome to My Blog
+title: Under construction 🚧
 date: 2025-09-13
-excerpt: Welcome to my personal blog where I share thoughts on neuroscience, research, and academic life.
+# excerpt: Welcome to my personal blog where I share thoughts on neuroscience, research, and academic life.
+excerpt: 🚧
 ---
 
-# Welcome to My Blog
+<!-- # Welcome to My Blog
 
 Hello and welcome to my personal blog! I'm excited to share this space with you where I'll be writing about my journey as a PhD student in neuroscience, research insights, and thoughts on the fascinating world of neural dynamics.
 
@@ -29,4 +30,4 @@ Feel free to reach out to me through the social links on my main page. I'm alway
 Looking forward to sharing this journey with you.
 
 Best,  
-Nosrat
+Nosrat -->

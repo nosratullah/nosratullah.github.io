@@ -3,51 +3,70 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Sketch</title>
-
-    <link rel="stylesheet" type="text/css" href="/style.css">
-
+    <title>Dynamical System</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="../art-layout.css">
     <script src="libraries/p5.min.js"></script>
     <script src="libraries/p5.sound.min.js"></script>
   </head>
-
   <body>
     <nav class="hero">
-      <a>
-        <h1 href="index.html"> Nosrat</h1>
-      </a>
+      <a><h1>Nosrat</h1></a>
       <div class="nav-controls">
         <div id="menu"></div>
       </div>
-
-    <script>
+      <script>
         fetch('/menu.html')
-            .then(response => response.text())
-            .then(data => {
-                const parser = new DOMParser();
-                const menuDoc = parser.parseFromString(data, 'text/html');
-                
-                // Get the menu ul and theme toggle button
-                const menuUl = menuDoc.querySelector('ul');
-                const themeToggle = menuDoc.querySelector('.theme-toggle');
-                
-                // Insert menu ul into the menu div
-                document.getElementById('menu').appendChild(menuUl);
-                
-                // Insert theme toggle into nav-controls (after menu div)
-                document.querySelector('.nav-controls').appendChild(themeToggle);
-                
-                // Execute any scripts from the menu
-                const scripts = menuDoc.querySelectorAll('script');
-                scripts.forEach(script => {
-                    const newScript = document.createElement('script');
-                    newScript.textContent = script.textContent;
-                    document.head.appendChild(newScript);
-                });
+          .then(r => r.text())
+          .then(data => {
+            const doc = new DOMParser().parseFromString(data, 'text/html');
+            document.getElementById('menu').appendChild(doc.querySelector('ul'));
+            document.querySelector('.nav-controls').appendChild(doc.querySelector('.theme-toggle'));
+            doc.querySelectorAll('script').forEach(s => {
+              const ns = document.createElement('script');
+              ns.textContent = s.textContent;
+              document.head.appendChild(ns);
             });
-    </script>
-    </nav><!-- .nav-menu -->
+          });
+      </script>
+    </nav>
+
+    <main class="art-page">
+      <div class="art-canvas-window" id="canvas-container"></div>
+
+      <div class="art-controls">
+        <h2>Matrix A</h2>
+
+        <div class="control-group">
+          <label>a₁₁ <span id="a11-val">-1.00</span></label>
+          <input type="range" id="a11-slider" min="-2" max="2" step="0.01" value="-1">
+        </div>
+
+        <div class="control-group">
+          <label>a₁₂ <span id="a12-val">-1.00</span></label>
+          <input type="range" id="a12-slider" min="-2" max="2" step="0.01" value="-1">
+        </div>
+
+        <div class="control-group">
+          <label>a₂₁ <span id="a21-val">2.00</span></label>
+          <input type="range" id="a21-slider" min="-2" max="2" step="0.01" value="2">
+        </div>
+
+        <div class="control-group">
+          <label>a₂₂ <span id="a22-val">-1.00</span></label>
+          <input type="range" id="a22-slider" min="-2" max="2" step="0.01" value="-1">
+        </div>
+
+        <div class="art-equation" id="equation-display">dx/dt = …<br>dy/dt = …</div>
+
+        <div class="art-equation" id="eigenvalues-display">λ₁ = …<br>λ₂ = …</div>
+
+        <button class="reset-btn" id="reset-btn">Reset trajectory</button>
+
+        <p class="art-info">Click on the canvas to set a new initial condition. Sliders change the system matrix A. Red line: dx/dt = 0 nullcline. Blue line: dy/dt = 0 nullcline.</p>
+      </div>
+    </main>
+
     <script src="sketch.js"></script>
   </body>
 </html>

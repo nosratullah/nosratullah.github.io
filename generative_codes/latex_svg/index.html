@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LaTeX → SVG</title>
+  <link rel="stylesheet" href="/style.css">
+
+  <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(','\\)']],
+      displayMath: [['\\[','\\]']],
+      packages: {'[+]': ['ams']}
+    },
+    svg: { fontCache: 'local' },
+    startup: {
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.startup.promise.then(() => {
+          window._mjxReady = true;
+          document.getElementById('status').textContent = '';
+          document.getElementById('render-btn').disabled = false;
+          renderLatex();
+        });
+      }
+    }
+  };
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script>
+
+  <style>
+    .latex-page {
+      margin-top: 80px;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .latex-card {
+      background: var(--color-bg);
+      border: 2px solid var(--color-hover);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .latex-card h1 {
+      font-size: 1.4rem;
+      font-weight: normal;
+      margin: 0 0 1.5rem 0;
+      color: var(--color-text);
+    }
+
+    .latex-card h1 span {
+      color: var(--color-hover);
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      color: var(--color-text);
+      opacity: 0.6;
+      display: block;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Preset buttons */
+    .presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 1.5rem;
+    }
+
+    .preset-btn {
+      font-size: 0.75rem;
+      font-family: 'Courier', monospace;
+      padding: 4px 10px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-text);
+      border-radius: 20px;
+      cursor: pointer;
+      color: var(--color-text);
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .preset-btn:hover {
+      border-color: var(--color-hover);
+      color: var(--color-hover);
+      box-shadow: none;
+    }
+
+    .preset-btn:active {
+      transform: none;
+    }
+
+    /* Textarea */
+    .latex-label {
+      font-size: 0.85rem;
+      color: var(--color-text);
+      display: block;
+      margin-bottom: 6px;
+      opacity: 0.8;
+    }
+
+    .latex-input {
+      width: 100%;
+      min-height: 80px;
+      font-family: 'Courier', monospace;
+      font-size: 0.85rem;
+      padding: 10px 12px;
+      background: var(--color-bg);
+      color: var(--color-text);
+      border: 2px solid var(--color-text);
+      border-radius: var(--border-radius);
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .latex-input:focus {
+      border-color: var(--color-hover);
+      box-shadow: none;
+    }
+
+    .latex-input:hover {
+      box-shadow: none;
+    }
+
+    .hint {
+      font-size: 0.75rem;
+      color: var(--color-text);
+      opacity: 0.5;
+      margin: 5px 0 0 0;
+    }
+
+    /* Controls row */
+    .latex-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 1.25rem 0;
+      flex-wrap: wrap;
+    }
+
+    .render-btn {
+      font-size: 0.85rem;
+      font-family: 'Courier', monospace;
+      padding: 7px 16px;
+      background: var(--color-text);
+      color: var(--color-bg);
+      border: 2px solid var(--color-text);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+
+    .render-btn:hover:not(:disabled) {
+      background: var(--color-hover);
+      border-color: var(--color-hover);
+      color: var(--color-bg);
+      box-shadow: none;
+    }
+
+    .render-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .render-btn:active {
+      transform: none;
+    }
+
+    .check-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--color-text);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Override global checkbox style for this page */
+    .check-label input[type="checkbox"] {
+      width: 1rem;
+      height: 1rem;
+      border: 2px solid var(--color-text);
+      border-radius: 3px;
+      padding: 0;
+    }
+
+    .check-label input[type="checkbox"]:hover {
+      box-shadow: 0 0 0 2px var(--color-hover);
+    }
+
+    .scale-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+      font-size: 0.85rem;
+      color: var(--color-text);
+    }
+
+    .scale-group strong {
+      min-width: 36px;
+      color: var(--color-hover);
+    }
+
+    .scale-slider {
+      width: 90px;
+      accent-color: var(--color-hover);
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      font-size: inherit;
+      background: transparent;
+    }
+
+    .scale-slider:hover { box-shadow: none; }
+    .scale-slider:active { transform: none; }
+
+    /* Preview window */
+    .latex-preview {
+      background: var(--color-bg);
+      border: 2px solid var(--color-hover);
+      border-radius: var(--border-radius);
+      min-height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      margin-bottom: 1rem;
+      overflow: auto;
+    }
+
+    #status {
+      font-size: 0.85rem;
+      color: var(--color-text);
+      opacity: 0.4;
+    }
+
+    /* Invert MathJax SVG in dark mode for readability */
+    [data-theme="dark"] #mjx-out svg {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    /* Actions */
+    .latex-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      font-size: 0.85rem;
+      font-family: 'Courier', monospace;
+      padding: 7px 14px;
+      background: var(--color-bg);
+      color: var(--color-text);
+      border: 2px solid var(--color-text);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+
+    .action-btn:hover:not(:disabled) {
+      border-color: var(--color-hover);
+      color: var(--color-hover);
+      box-shadow: none;
+    }
+
+    .action-btn:disabled { opacity: 0.35; cursor: default; }
+    .action-btn:active { transform: none; }
+
+    #feedback {
+      font-size: 0.82rem;
+      color: var(--color-hover);
+      margin-left: 4px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="hero">
+    <a><h1>Nosrat</h1></a>
+    <div class="nav-controls">
+      <div id="menu"></div>
+    </div>
+    <script>
+      fetch('/menu.html')
+        .then(r => r.text())
+        .then(data => {
+          const doc = new DOMParser().parseFromString(data, 'text/html');
+          document.getElementById('menu').appendChild(doc.querySelector('ul'));
+          document.querySelector('.nav-controls').appendChild(doc.querySelector('.theme-toggle'));
+          doc.querySelectorAll('script').forEach(s => {
+            const ns = document.createElement('script');
+            ns.textContent = s.textContent;
+            document.head.appendChild(ns);
+          });
+        });
+    </script>
+  </nav>
+
+  <main class="latex-page">
+    <div class="latex-card">
+      <h1>LaTeX <span>→</span> SVG <span style="font-size:0.9rem; opacity:0.5;">renderer</span></h1>
+
+      <span class="section-label">Examples</span>
+      <div class="presets" id="presets"></div>
+
+      <label class="latex-label" for="latex-in">Formula (LaTeX)</label>
+      <textarea class="latex-input" id="latex-in" placeholder="\frac{-b \pm \sqrt{b^2-4ac}}{2a}"></textarea>
+      <p class="hint">Press <kbd>Ctrl+Enter</kbd> to render</p>
+
+      <div class="latex-controls">
+        <button class="render-btn" id="render-btn" disabled onclick="renderLatex()">Render</button>
+        <label class="check-label">
+          <input type="checkbox" id="display-mode" checked onchange="renderLatex()"> Display mode
+        </label>
+        <div class="scale-group">
+          <span>Scale</span>
+          <input class="scale-slider" type="range" id="scale" min="1" max="5" step="0.5" value="2"
+            oninput="document.getElementById('scale-lbl').textContent = parseFloat(this.value).toFixed(1) + '×'">
+          <strong id="scale-lbl">2.0×</strong>
+        </div>
+      </div>
+
+      <div class="latex-preview">
+        <span id="status">Loading MathJax…</span>
+        <div id="mjx-out"></div>
+      </div>
+
+      <div class="latex-actions">
+        <button class="action-btn" id="dl-btn" disabled onclick="downloadSVG()">Download .svg</button>
+        <button class="action-btn" id="copy-btn" disabled onclick="copySVGCode()">Copy SVG code</button>
+        <span id="feedback"></span>
+      </div>
+    </div>
+  </main>
+
+  <script>
+  const PRESETS = [
+    { label: 'Quadratic',      f: 'x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}' },
+    { label: "Euler's id.",    f: 'e^{i\\pi} + 1 = 0' },
+    { label: 'Gaussian',       f: '\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}' },
+    { label: 'Schrödinger',    f: 'i\\hbar\\dfrac{\\partial}{\\partial t}\\Psi = \\hat{H}\\Psi' },
+    { label: 'Taylor series',  f: 'f(x) = \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(a)}{n!}(x-a)^n' },
+    { label: 'Ampère–Maxwell', f: '\\nabla \\times \\mathbf{B} = \\mu_0\\!\\left(\\mathbf{J} + \\varepsilon_0\\frac{\\partial \\mathbf{E}}{\\partial t}\\right)' },
+    { label: 'Binomial',       f: '(x+y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^{n-k} y^k' },
+    { label: 'Matrix',         f: 'A = \\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}' },
+  ];
+
+  const presetsEl = document.getElementById('presets');
+  PRESETS.forEach(p => {
+    const b = document.createElement('button');
+    b.className = 'preset-btn';
+    b.textContent = p.label;
+    b.onclick = () => { document.getElementById('latex-in').value = p.f; renderLatex(); };
+    presetsEl.appendChild(b);
+  });
+
+  document.getElementById('latex-in').value = PRESETS[0].f;
+  document.getElementById('latex-in').addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') renderLatex();
+  });
+
+  let _natW = 0, _natH = 0;
+
+  async function renderLatex() {
+    if (!window._mjxReady) return;
+    const latex = document.getElementById('latex-in').value.trim();
+    const isDisplay = document.getElementById('display-mode').checked;
+    const out = document.getElementById('mjx-out');
+    const status = document.getElementById('status');
+
+    status.textContent = '';
+    document.getElementById('feedback').textContent = '';
+
+    if (!latex) {
+      out.innerHTML = '';
+      status.textContent = 'Enter a formula above';
+      setExportEnabled(false);
+      return;
+    }
+
+    out.innerHTML = isDisplay ? `\\[${latex}\\]` : `\\(${latex}\\)`;
+
+    try {
+      MathJax.typesetClear([out]);
+      await MathJax.typesetPromise([out]);
+      const svg = out.querySelector('svg');
+      if (svg) {
+        const r = svg.getBoundingClientRect();
+        _natW = r.width;
+        _natH = r.height;
+        setExportEnabled(true);
+      } else {
+        setExportEnabled(false);
+      }
+    } catch (err) {
+      out.innerHTML = '';
+      status.textContent = 'Render error — check your LaTeX syntax';
+      setExportEnabled(false);
+    }
+  }
+
+  function setExportEnabled(on) {
+    document.getElementById('dl-btn').disabled = !on;
+    document.getElementById('copy-btn').disabled = !on;
+  }
+
+  function buildSVGString() {
+    const svg = document.getElementById('mjx-out').querySelector('svg');
+    if (!svg || _natW === 0) return null;
+
+    const scale = parseFloat(document.getElementById('scale').value);
+    const w = Math.round(_natW * scale);
+    const h = Math.round(_natH * scale);
+
+    const clone = svg.cloneNode(true);
+    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    clone.setAttribute('width', w + 'px');
+    clone.setAttribute('height', h + 'px');
+    clone.setAttribute('style', 'color: black;');
+
+    const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    bg.setAttribute('width', '100%');
+    bg.setAttribute('height', '100%');
+    bg.setAttribute('fill', 'white');
+    clone.insertBefore(bg, clone.firstChild);
+
+    return new XMLSerializer().serializeToString(clone);
+  }
+
+  function downloadSVG() {
+    const str = buildSVGString();
+    if (!str) return;
+    const blob = new Blob([str], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'formula.svg';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showFeedback('Downloaded formula.svg');
+  }
+
+  async function copySVGCode() {
+    const str = buildSVGString();
+    if (!str) return;
+    try {
+      await navigator.clipboard.writeText(str);
+      showFeedback('SVG code copied to clipboard');
+    } catch {
+      showFeedback('Copy failed — try another browser');
+    }
+  }
+
+  function showFeedback(msg) {
+    const el = document.getElementById('feedback');
+    el.textContent = msg;
+    setTimeout(() => { el.textContent = ''; }, 2500);
+  }
+  </script>
+</body>
+</html>

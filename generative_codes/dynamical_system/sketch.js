@@ -2,6 +2,43 @@ let dt = 0.01;
 let trajectory = [];
 let x, y;
 
+function updateEquation() {
+  if (!window._mjxReady) return;
+
+  const a11 = parseFloat(document.getElementById('a11-slider').value);
+  const a12 = parseFloat(document.getElementById('a12-slider').value);
+  const a21 = parseFloat(document.getElementById('a21-slider').value);
+  const a22 = parseFloat(document.getElementById('a22-slider').value);
+
+  const fmt = v => (v >= 0 ? '\\phantom{-}' : '') + v.toFixed(2);
+
+  const eqEl = document.getElementById('equation-display');
+  eqEl.innerHTML =
+    `\\[\\begin{pmatrix} \\dot{x}_t \\\\ \\dot{y}_t \\end{pmatrix} = ` +
+    `\\begin{pmatrix} ${fmt(a11)} & ${fmt(a12)} \\\\ ${fmt(a21)} & ${fmt(a22)} \\end{pmatrix} ` +
+    `\\begin{pmatrix} x_t \\\\ y_t \\end{pmatrix}\\]`;
+
+  // Eigenvalues
+  const trace = a11 + a22;
+  const det   = a11 * a22 - a12 * a21;
+  const disc  = trace * trace - 4 * det;
+  let evLatex;
+  if (disc >= 0) {
+    const ev1 = ((trace + Math.sqrt(disc)) / 2).toFixed(2);
+    const ev2 = ((trace - Math.sqrt(disc)) / 2).toFixed(2);
+    evLatex = `\\lambda_1 = ${ev1}, \\quad \\lambda_2 = ${ev2}`;
+  } else {
+    const re = (trace / 2).toFixed(2);
+    const im = (Math.sqrt(-disc) / 2).toFixed(2);
+    evLatex = `\\lambda_{1,2} = ${re} \\pm ${im}\\,i`;
+  }
+  const evEl = document.getElementById('eigenvalues-display');
+  evEl.innerHTML = `\\[${evLatex}\\]`;
+
+  MathJax.typesetClear([eqEl, evEl]);
+  MathJax.typesetPromise([eqEl, evEl]);
+}
+
 function setup() {
   let cnv = createCanvas(700, 520);
   cnv.parent('canvas-container');
@@ -9,7 +46,6 @@ function setup() {
   x = 1;
   y = 0;
 
-  // Wire slider value displays and reset trajectory on change
   [['a11-slider', 'a11-val'], ['a12-slider', 'a12-val'],
    ['a21-slider', 'a21-val'], ['a22-slider', 'a22-val']].forEach(([id, vid]) => {
     const el = document.getElementById(id);
@@ -17,6 +53,7 @@ function setup() {
     el.addEventListener('input', () => {
       vl.textContent = parseFloat(el.value).toFixed(2);
       x = 1; y = 0; trajectory = [];
+      updateEquation();
     });
   });
 
@@ -36,26 +73,6 @@ function draw() {
   let a21 = parseFloat(document.getElementById('a21-slider').value);
   let a22 = parseFloat(document.getElementById('a22-slider').value);
 
-  // Update equation display
-  document.getElementById('equation-display').innerHTML =
-    `dx/dt = ${a11.toFixed(2)}x + ${a12.toFixed(2)}y<br>` +
-    `dy/dt = ${a21.toFixed(2)}x + ${a22.toFixed(2)}y`;
-
-  // Calculate and display eigenvalues
-  let trace = a11 + a22;
-  let det = a11 * a22 - a12 * a21;
-  let disc = trace * trace - 4 * det;
-  if (disc >= 0) {
-    let ev1 = ((trace + sqrt(disc)) / 2).toFixed(2);
-    let ev2 = ((trace - sqrt(disc)) / 2).toFixed(2);
-    document.getElementById('eigenvalues-display').innerHTML = `λ₁ = ${ev1}<br>λ₂ = ${ev2}`;
-  } else {
-    let re = (trace / 2).toFixed(2);
-    let im = (sqrt(-disc) / 2).toFixed(2);
-    document.getElementById('eigenvalues-display').innerHTML =
-      `λ₁ = ${re} + ${im}i<br>λ₂ = ${re} − ${im}i`;
-  }
-
   // Euler step
   let dx = a11 * x + a12 * y;
   let dy = a21 * x + a22 * y;
@@ -65,7 +82,6 @@ function draw() {
 
   translate(width / 2, height / 2);
 
-  // Trajectory dots
   let dotColor = theme === 'dark' ? 200 : 50;
   stroke(dotColor);
   fill(dotColor);
@@ -79,7 +95,6 @@ function draw() {
   stroke(0, 0, 255);
   line(-width / 2, -a21 / a22 * (-width / 2), width / 2, -a21 / a22 * (width / 2));
 
-  // Current state dot
   let stateColor = theme === 'dark' ? 255 : 17;
   fill(stateColor);
   stroke(stateColor);
@@ -109,7 +124,6 @@ function drawVectorField(a11, a12, a21, a22) {
 }
 
 function mousePressed() {
-  // Only respond to clicks within the canvas
   if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height) return;
   x = (mouseX - width / 2) / 100;
   y = (mouseY - height / 2) / 100;

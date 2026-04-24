@@ -6,7 +6,8 @@
   gap: 1.5rem;
   padding: 1.5rem;
   align-items: flex-start;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
 }
 
 .art-canvas-window {
@@ -109,16 +110,3 @@
   transform: none;
 }
 
-@media (max-width: 900px) {
-  .art-page {
-    flex-direction: column;
-  }
-  .art-canvas-window canvas {
-    max-width: 100%;
-    height: auto !important;
-  }
-  .art-controls {
-    max-width: 100%;
-    width: 100%;
-  }
-}

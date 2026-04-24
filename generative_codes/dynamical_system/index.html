@@ -6,6 +6,24 @@
     <title>Dynamical System</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="../art-layout.css">
+
+    <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      svg: { fontCache: 'local' },
+      startup: {
+        ready() {
+          MathJax.startup.defaultReady();
+          MathJax.startup.promise.then(() => {
+            window._mjxReady = true;
+            if (typeof updateEquation === 'function') updateEquation();
+          });
+        }
+      }
+    };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script>
+
     <script src="libraries/p5.min.js"></script>
     <script src="libraries/p5.sound.min.js"></script>
   </head>
@@ -32,8 +50,6 @@
     </nav>
 
     <main class="art-page">
-      <div class="art-canvas-window" id="canvas-container"></div>
-
       <div class="art-controls">
         <h2>Matrix A</h2>
 
@@ -57,14 +73,16 @@
           <input type="range" id="a22-slider" min="-2" max="2" step="0.01" value="-1">
         </div>
 
-        <div class="art-equation" id="equation-display">dx/dt = …<br>dy/dt = …</div>
+        <div class="art-equation" id="equation-display"></div>
 
-        <div class="art-equation" id="eigenvalues-display">λ₁ = …<br>λ₂ = …</div>
+        <div class="art-equation" id="eigenvalues-display"></div>
 
         <button class="reset-btn" id="reset-btn">Reset trajectory</button>
 
         <p class="art-info">Click on the canvas to set a new initial condition. Sliders change the system matrix A. Red line: dx/dt = 0 nullcline. Blue line: dy/dt = 0 nullcline.</p>
       </div>
+
+      <div class="art-canvas-window" id="canvas-container"></div>
     </main>
 
     <script src="sketch.js"></script>

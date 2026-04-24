@@ -1,0 +1,112 @@
+/* Shared layout for generative art pages */
+
+.art-page {
+  margin-top: 70px;
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.art-canvas-window {
+  border: 2px solid var(--color-hover);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.art-controls {
+  min-width: 200px;
+  flex: 1;
+  max-width: 280px;
+  padding: 1.25rem;
+  border: 2px solid var(--color-hover);
+  border-radius: var(--border-radius);
+  background: var(--color-bg);
+}
+
+.art-controls h2 {
+  font-size: 1rem;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-hover);
+}
+
+.control-group {
+  margin-bottom: 1rem;
+}
+
+.control-group label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+  cursor: default;
+}
+
+/* Override global input styles for range inputs */
+.control-group input[type="range"] {
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  font-size: inherit;
+  accent-color: var(--color-hover);
+  cursor: pointer;
+  height: auto;
+  background: transparent;
+}
+
+.control-group input[type="range"]:hover {
+  box-shadow: none;
+}
+
+.control-group input[type="range"]:active {
+  transform: none;
+}
+
+.art-info {
+  font-size: 0.8rem;
+  opacity: 0.75;
+  margin-top: 1rem;
+  line-height: 1.5;
+  border-top: 1px solid var(--color-hover);
+  padding-top: 0.75rem;
+}
+
+.art-equation {
+  font-size: 0.82rem;
+  margin-bottom: 0.75rem;
+  padding: 0.6rem;
+  background: rgba(154, 205, 50, 0.1);
+  border-radius: var(--border-radius);
+  border-left: 3px solid var(--color-hover);
+  line-height: 1.6;
+}
+
+.art-controls .reset-btn {
+  margin-top: 0.5rem;
+  width: 100%;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 2px solid var(--color-text);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.art-controls .reset-btn:hover {
+  border-color: var(--color-hover);
+  color: var(--color-hover);
+  box-shadow: none;
+}
+
+.art-controls .reset-btn:active {
+  transform: none;
+}
+

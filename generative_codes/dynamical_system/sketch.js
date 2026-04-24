@@ -1,119 +1,106 @@
 let dt = 0.01;
 let trajectory = [];
-let restartButton;
-let equationP, eigenvaluesP;
-let infoButton, infoPopup;
-let infoVisible = false;
+let x, y;
+
+function updateEquation() {
+  if (!window._mjxReady) return;
+
+  const a11 = parseFloat(document.getElementById('a11-slider').value);
+  const a12 = parseFloat(document.getElementById('a12-slider').value);
+  const a21 = parseFloat(document.getElementById('a21-slider').value);
+  const a22 = parseFloat(document.getElementById('a22-slider').value);
+
+  const fmt = v => (v >= 0 ? '\\phantom{-}' : '') + v.toFixed(2);
+
+  const eqEl = document.getElementById('equation-display');
+  eqEl.innerHTML =
+    `\\[\\begin{pmatrix} \\dot{x}_t \\\\ \\dot{y}_t \\end{pmatrix} = ` +
+    `\\begin{pmatrix} ${fmt(a11)} & ${fmt(a12)} \\\\ ${fmt(a21)} & ${fmt(a22)} \\end{pmatrix} ` +
+    `\\begin{pmatrix} x_t \\\\ y_t \\end{pmatrix}\\]`;
+
+  // Eigenvalues
+  const trace = a11 + a22;
+  const det   = a11 * a22 - a12 * a21;
+  const disc  = trace * trace - 4 * det;
+  let evLatex;
+  if (disc >= 0) {
+    const ev1 = ((trace + Math.sqrt(disc)) / 2).toFixed(2);
+    const ev2 = ((trace - Math.sqrt(disc)) / 2).toFixed(2);
+    evLatex = `\\lambda_1 = ${ev1}, \\quad \\lambda_2 = ${ev2}`;
+  } else {
+    const re = (trace / 2).toFixed(2);
+    const im = (Math.sqrt(-disc) / 2).toFixed(2);
+    evLatex = `\\lambda_{1,2} = ${re} \\pm ${im}\\,i`;
+  }
+  const evEl = document.getElementById('eigenvalues-display');
+  evEl.innerHTML = `\\[${evLatex}\\]`;
+
+  MathJax.typesetClear([eqEl, evEl]);
+  MathJax.typesetPromise([eqEl, evEl]);
+}
 
 function setup() {
-  createCanvas(1000, 600);
-  
-  // Initial state
+  let cnv = createCanvas(700, 520);
+  cnv.parent('canvas-container');
+
   x = 1;
   y = 0;
 
-  // Display the equation
-  equationP = createP('').position(10, height - 180);
+  [['a11-slider', 'a11-val'], ['a12-slider', 'a12-val'],
+   ['a21-slider', 'a21-val'], ['a22-slider', 'a22-val']].forEach(([id, vid]) => {
+    const el = document.getElementById(id);
+    const vl = document.getElementById(vid);
+    el.addEventListener('input', () => {
+      vl.textContent = parseFloat(el.value).toFixed(2);
+      x = 1; y = 0; trajectory = [];
+      updateEquation();
+    });
+  });
 
-  // Display the eigenvalues
-  eigenvaluesP = createP('').position(10, height - 100);
-
-  // Create sliders for matrix A parameters
-  createP('a11:').position(10, height + 10);
-  a11Slider = createSlider(-2, 2, -1, 0.01);
-  a11Slider.position(50, height + 10);
-
-  createP('a12:').position(10, height + 40);
-  a12Slider = createSlider(-2, 2, -1, 0.01);
-  a12Slider.position(50, height + 40);
-
-  createP('a21:').position(10, height + 70);
-  a21Slider = createSlider(-2, 2, 2, 0.01);
-  a21Slider.position(50, height + 70);
-
-  createP('a22:').position(10, height + 100);
-  a22Slider = createSlider(-2, 2, -1, 0.01);
-  a22Slider.position(50, height + 100);
-
-  // Create restart button
-  // restartButton = createButton('Restart');
-  // restartButton.position(10, height + 150);
-  // restartButton.mousePressed(restartSystem);
-
-  // Create info button and pop-up
-  createInfoPanel();
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    x = 1; y = 0; trajectory = [];
+  });
 }
 
 function draw() {
-  let theme = document.body.getAttribute('data-theme') || 'light';
-  let bgColor = theme === 'dark' ? (17, 17, 17) : (255, 255, 255); // Black for dark mode, white for light mode
-  let bgAlpha = theme === 'dark' ? 20 : 30; // Slight trail effect
-  
+  let theme = document.documentElement.getAttribute('data-theme') || 'light';
+  let bgColor = theme === 'dark' ? 17 : 255;
+  let bgAlpha = theme === 'dark' ? 20 : 30;
   background(bgColor, bgAlpha);
-  // background(30); // Dark background
 
-  // Get matrix A parameters from sliders
-  let a11 = a11Slider.value();
-  let a12 = a12Slider.value();
-  let a21 = a21Slider.value();
-  let a22 = a22Slider.value();
+  let a11 = parseFloat(document.getElementById('a11-slider').value);
+  let a12 = parseFloat(document.getElementById('a12-slider').value);
+  let a21 = parseFloat(document.getElementById('a21-slider').value);
+  let a22 = parseFloat(document.getElementById('a22-slider').value);
 
-  // Update the equation display
-  equationP.html(`Equation: <br> dx/dt = ${a11.toFixed(1)} * x + ${a12.toFixed(1)} * y <br> dy/dt = ${a21.toFixed(1)} * x + ${a22.toFixed(1)} * y`);
-
-  // Calculate eigenvalues
-  let trace = a11 + a22;
-  let determinant = a11 * a22 - a12 * a21;
-  let discriminant = trace * trace - 4 * determinant;
-  let eigenvalue1, eigenvalue2;
-
-  if (discriminant >= 0) {
-    eigenvalue1 = ((trace + sqrt(discriminant)) / 2).toFixed(2);
-    eigenvalue2 = ((trace - sqrt(discriminant)) / 2).toFixed(2);
-  } else {
-    eigenvalue1 = `${(trace / 2).toFixed(2)} + ${(sqrt(-discriminant) / 2).toFixed(2)}i`;
-    eigenvalue2 = `${(trace / 2).toFixed(2)} - ${(sqrt(-discriminant) / 2).toFixed(2)}i`;
-  }
-
-  // Update the eigenvalues display
-  eigenvaluesP.html(`Eigenvalues: <br> λ1 = ${eigenvalue1} <br> λ2 = ${eigenvalue2}`);
-
-  // Update the system state using Euler's method
+  // Euler step
   let dx = a11 * x + a12 * y;
   let dy = a21 * x + a22 * y;
   x += dx * dt;
   y += dy * dt;
-
-  // Store the trajectory
   trajectory.push([x, y]);
 
-  // Draw the phase diagram
   translate(width / 2, height / 2);
-  stroke(200);
-  fill(200);
+
+  let dotColor = theme === 'dark' ? 200 : 50;
+  stroke(dotColor);
+  fill(dotColor);
   for (let i = 0; i < trajectory.length; i++) {
     ellipse(trajectory[i][0] * 100, trajectory[i][1] * 100, 2, 2);
   }
 
-  // Draw the nullclines
+  // Nullclines
   stroke(255, 0, 0);
-  line(-width / 2, -a11 / a12 * (-width / 2), width / 2, -a11 / a12 * (width / 2)); // dx/dt = 0
+  line(-width / 2, -a11 / a12 * (-width / 2), width / 2, -a11 / a12 * (width / 2));
   stroke(0, 0, 255);
-  line(-width / 2, -a21 / a22 * (-width / 2), width / 2, -a21 / a22 * (width / 2)); // dy/dt = 0
+  line(-width / 2, -a21 / a22 * (-width / 2), width / 2, -a21 / a22 * (width / 2));
 
-  // Draw the current state
-  fill(255);
+  let stateColor = theme === 'dark' ? 255 : 17;
+  fill(stateColor);
+  stroke(stateColor);
   ellipse(x * 100, y * 100, 10, 10);
 
-  // Draw the vector field
   drawVectorField(a11, a12, a21, a22);
-}
-
-function restartSystem() {
-  // Reset the state and clear the trajectory
-  x = 1;
-  y = 0;
-  trajectory = [];
 }
 
 function drawVectorField(a11, a12, a21, a22) {
@@ -137,86 +124,8 @@ function drawVectorField(a11, a12, a21, a22) {
 }
 
 function mousePressed() {
-  // Convert mouse coordinates to the phase diagram coordinates
-  let mouseXTransformed = (mouseX - width / 2) / 100;
-  let mouseYTransformed = (mouseY - height / 2) / 100;
-
-  // Set the initial state to the clicked position
-  x = mouseXTransformed;
-  y = mouseYTransformed;
-
-  // Clear the trajectory
+  if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height) return;
+  x = (mouseX - width / 2) / 100;
+  y = (mouseY - height / 2) / 100;
   trajectory = [];
-}
-
-function createInfoPanel() {
-  // Create info button
-  infoButton = createButton('🤔');
-  infoButton.class('info-button');
-  infoButton.mousePressed(toggleInfoPopup);
-  infoButton.style('position', 'fixed');
-  infoButton.style('bottom', '20px');
-  infoButton.style('right', '20px');
-  infoButton.style('z-index', '1000');
-
-  // Create info popup
-  infoPopup = createDiv();
-  infoPopup.id('info-popup');
-  infoPopup.style('position', 'fixed');
-  infoPopup.style('bottom', '80px');
-  infoPopup.style('right', '20px');
-  infoPopup.style('width', '300px');
-  infoPopup.style('max-height', '400px');
-  infoPopup.style('overflow-y', 'auto');
-  infoPopup.style('padding', '20px');
-  infoPopup.style('border-radius', '8px');
-  infoPopup.style('box-shadow', '0 4px 12px rgba(0, 0, 0, 0.15)');
-  infoPopup.style('font-family', 'Arial, sans-serif');
-  infoPopup.style('font-size', '13px');
-  infoPopup.style('line-height', '1.5');
-  infoPopup.style('z-index', '999');
-  infoPopup.style('display', 'none');
-  
-  // Set theme-based colors
-  let theme = document.body.getAttribute('data-theme') || 'light';
-  updateInfoPopupStyle(theme);
-  
-  infoPopup.html(`
-    <h3 style="margin-top: 0; margin-bottom: 12px;">2D Linear Dynamical System</h3>
-    <p style="margin: 8px 0;"><strong>What you're seeing:</strong></p>
-    <ul style="margin: 4px 0; padding-left: 16px;">
-      <li><span style="color: rgb(200, 200, 200);">●</span> <strong>Gray dots:</strong> Trajectory showing the system's evolution over time</li>
-      <li><span style="color: rgb(255, 0, 0);">━</span> <strong>Red line:</strong> Nullcline where dx/dt = 0</li>
-      <li><span style="color: rgb(0, 0, 255);">━</span> <strong>Blue line:</strong> Nullcline where dy/dt = 0</li>
-      <li><span style="color: rgb(200, 200, 200);">→</span> <strong>Vector field:</strong> Shows direction and magnitude of flow</li>
-      <li><span style="color: white;">●</span> <strong>White dot:</strong> Current state (position)</li>
-    </ul>
-    <p style="margin: 8px 0;"><strong>Interaction:</strong></p>
-    <ul style="margin: 4px 0; padding-left: 16px;">
-      <li>Click anywhere to set the initial condition</li>
-      <li>Adjust sliders to change the system matrix</li>
-    </ul>
-    <p style="margin: 8px 0; font-size: 12px;">The system is described by: ẋ = Ax where A is a 2×2 matrix</p>
-  `);
-}
-
-function toggleInfoPopup() {
-  infoVisible = !infoVisible;
-  if (infoVisible) {
-    infoPopup.style('display', 'block');
-  } else {
-    infoPopup.style('display', 'none');
-  }
-}
-
-function updateInfoPopupStyle(theme) {
-  if (theme === 'dark') {
-    infoPopup.style('background-color', 'rgba(40, 40, 40, 0.95)');
-    infoPopup.style('color', 'rgb(230, 230, 230)');
-    infoPopup.style('border', '1px solid rgba(100, 100, 100, 0.3)');
-  } else {
-    infoPopup.style('background-color', 'rgba(255, 255, 255, 0.95)');
-    infoPopup.style('color', 'rgb(40, 40, 40)');
-    infoPopup.style('border', '1px solid rgba(150, 150, 150, 0.3)');
-  }
 }

@@ -3,51 +3,64 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Sketch</title>
-
-    <link rel="stylesheet" type="text/css" href="/style.css">
-
+    <title>Atoms</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="../art-layout.css">
     <script src="libraries/p5.min.js"></script>
     <script src="libraries/p5.sound.min.js"></script>
   </head>
-
   <body>
     <nav class="hero">
-      <a>
-        <h1 href="index.html"> Nosrat</h1>
-      </a>
+      <a><h1>Nosrat</h1></a>
       <div class="nav-controls">
         <div id="menu"></div>
       </div>
-
-    <script>
+      <script>
         fetch('/menu.html')
-            .then(response => response.text())
-            .then(data => {
-                const parser = new DOMParser();
-                const menuDoc = parser.parseFromString(data, 'text/html');
-                
-                // Get the menu ul and theme toggle button
-                const menuUl = menuDoc.querySelector('ul');
-                const themeToggle = menuDoc.querySelector('.theme-toggle');
-                
-                // Insert menu ul into the menu div
-                document.getElementById('menu').appendChild(menuUl);
-                
-                // Insert theme toggle into nav-controls (after menu div)
-                document.querySelector('.nav-controls').appendChild(themeToggle);
-                
-                // Execute any scripts from the menu
-                const scripts = menuDoc.querySelectorAll('script');
-                scripts.forEach(script => {
-                    const newScript = document.createElement('script');
-                    newScript.textContent = script.textContent;
-                    document.head.appendChild(newScript);
-                });
+          .then(r => r.text())
+          .then(data => {
+            const doc = new DOMParser().parseFromString(data, 'text/html');
+            document.getElementById('menu').appendChild(doc.querySelector('ul'));
+            document.querySelector('.nav-controls').appendChild(doc.querySelector('.theme-toggle'));
+            doc.querySelectorAll('script').forEach(s => {
+              const ns = document.createElement('script');
+              ns.textContent = s.textContent;
+              document.head.appendChild(ns);
             });
-    </script>
-    </nav><!-- .nav-menu -->
+          });
+      </script>
+    </nav>
+
+    <main class="art-page">
+      <div class="art-controls">
+        <h2>Controls</h2>
+
+        <div class="control-group">
+          <label>Radius <span id="radius-val">10</span></label>
+          <input type="range" id="radius-slider" min="10" max="100" value="10">
+        </div>
+
+        <div class="control-group">
+          <label>Ring size <span id="ring-val">60</span></label>
+          <input type="range" id="ring-slider" min="10" max="100" value="60">
+        </div>
+
+        <div class="control-group">
+          <label>Step <span id="step-val">5</span></label>
+          <input type="range" id="step-slider" min="1" max="10" value="5">
+        </div>
+
+        <div class="control-group">
+          <label>Spacing <span id="space-val">50</span></label>
+          <input type="range" id="space-slider" min="1" max="100" value="50">
+        </div>
+
+        <p class="art-info">Animated 3D spheres with rotating ring orbits. Drag mouse over canvas to look around.</p>
+      </div>
+
+      <div class="art-canvas-window" id="canvas-container"></div>
+    </main>
+
     <script src="sketch.js"></script>
   </body>
 </html>

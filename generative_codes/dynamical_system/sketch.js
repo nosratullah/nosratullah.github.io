@@ -90,9 +90,12 @@ function draw() {
   }
 
   // Nullclines
-  stroke(255, 0, 0);
+  strokeWeight(4)
+  stroke(128,24,24);
   line(-width / 2, -a11 / a12 * (-width / 2), width / 2, -a11 / a12 * (width / 2));
-  stroke(0, 0, 255);
+  strokeWeight(4)
+  // stroke(0, 0, 255);
+  stroke(200,8,21);
   line(-width / 2, -a21 / a22 * (-width / 2), width / 2, -a21 / a22 * (width / 2));
 
   let stateColor = theme === 'dark' ? 255 : 17;

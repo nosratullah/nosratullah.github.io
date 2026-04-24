@@ -90,10 +90,10 @@ function draw() {
   }
 
   // Nullclines
-  strokeWeight(4)
+  strokeWeight(4);
   stroke(128,24,24);
   line(-width / 2, -a11 / a12 * (-width / 2), width / 2, -a11 / a12 * (width / 2));
-  strokeWeight(4)
+  strokeWeight(4);
   // stroke(0, 0, 255);
   stroke(200,8,21);
   line(-width / 2, -a21 / a22 * (-width / 2), width / 2, -a21 / a22 * (width / 2));
@@ -115,6 +115,7 @@ function drawVectorField(a11, a12, a21, a22) {
       let len = sqrt(vx * vx + vy * vy);
       vx = vx / len * 10;
       vy = vy / len * 10;
+      stroke(1);
       line(i, j, i + vx, j + vy);
       push();
       translate(i + vx, j + vy);

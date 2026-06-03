@@ -102,7 +102,7 @@ function draw() {
   fill(stateColor);
   stroke(stateColor);
   ellipse(x * 100, y * 100, 10, 10);
-
+  strokeWeight(1);
   drawVectorField(a11, a12, a21, a22);
 }
 
